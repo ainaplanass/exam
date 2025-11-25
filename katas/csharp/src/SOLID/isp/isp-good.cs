@@ -3,64 +3,49 @@ using System;
 // Cumplimiento del ISP: Dividir interfaz ancha en interfaces más pequeñas y enfocadas
 // ✅ Solución: Crear interfaces separadas para diferentes capacidades
 
-// Interfaces separadas para diferentes capacidades ✅
-public interface IWorkable
+// ✅ Interfaces segregadas (separadas) para cada capacidad
+public interface IPrintable
 {
-  string Work();
+  string Print(string document);
 }
 
-public interface IEatable
+public interface IScannable
 {
-  string Eat();
+  string Scan();
 }
 
-public interface ISleepable
+// ✅ Impresora simple solo implementa lo que necesita
+public class SimplePrinter : IPrintable
 {
-  string Sleep();
+  public string Print(string document)
+  {
+    return $"Imprimiendo documento: {document}";
+  }
+  // ✅ No necesita implementar Scan()
 }
 
-// Human implementa todas las interfaces (necesita todas las capacidades) ✅
-public class Human : IWorkable, IEatable, ISleepable
+// ✅ Escáner simple solo implementa lo que necesita
+public class SimpleScanner : IScannable
 {
-  public string Work()
+  public string Scan()
   {
-    return "Humano trabajando";
+    return "Escaneando documento...";
   }
-
-  public string Eat()
-  {
-    return "Humano comiendo";
-  }
-
-  public string Sleep()
-  {
-    return "Humano durmiendo";
-  }
+  // ✅ No necesita implementar Print()
 }
 
-// Robot solo implementa lo que necesita ✅
-public class Robot : IWorkable
+// ✅ Dispositivo multifunción implementa ambas interfaces
+public class AdvancedPrinter : IPrintable, IScannable
 {
-  public string Work()
+  public string Print(string document)
   {
-    return "Robot trabajando";
-  }
-  // ✅ ¡No necesita implementar Eat() o Sleep()!
-}
-
-// SuperHuman puede trabajar y tiene habilidades especiales
-public class SuperHuman : IWorkable, ISleepable
-{
-  public string Work()
-  {
-    return "SuperHumano trabajando a super velocidad";
+    return $"Imprimiendo documento: {document}";
   }
 
-  public string Sleep()
+  public string Scan()
   {
-    return "SuperHumano durmiendo brevemente";
+    return "Escaneando documento...";
   }
-  // ✅ No necesita comer (obtiene energía del sol)
 }
 
 // Uso - ¡sin más implementaciones forzadas!
@@ -68,18 +53,23 @@ class Program
 {
   static void Main()
   {
-    var human = new Human();
-    var robot = new Robot();
-    var superHuman = new SuperHuman();
+    var simplePrinter = new SimplePrinter();
+    var simpleScanner = new SimpleScanner();
+    var advancedPrinter = new AdvancedPrinter();
 
-    Console.WriteLine(human.Work()); // ✅ Funciona
-    Console.WriteLine(human.Eat()); // ✅ Funciona
-    Console.WriteLine(human.Sleep()); // ✅ Funciona
+    Console.WriteLine(simplePrinter.Print("documento.pdf")); // ✅ Funciona
+                                                             // simplePrinter.Scan() - El método no existe (¡seguro en tiempo de compilación!)
 
-    Console.WriteLine(robot.Work()); // ✅ Funciona
-                                     // robot.Eat() - El método no existe (¡seguro en tiempo de compilación!)
+    Console.WriteLine(simpleScanner.Scan()); // ✅ Funciona
+                                             // simpleScanner.Print() - El método no existe (¡seguro en tiempo de compilación!)
 
-    Console.WriteLine(superHuman.Work()); // ✅ Funciona
-    Console.WriteLine(superHuman.Sleep()); // ✅ Funciona
+    Console.WriteLine(advancedPrinter.Print("documento.pdf")); // ✅ Funciona
+    Console.WriteLine(advancedPrinter.Scan()); // ✅ Funciona
+
+    // ✅ Beneficios:
+    // 1. Interfaces pequeñas y enfocadas
+    // 2. Clases solo implementan lo que necesitan
+    // 3. Sin métodos que lancen errores
+    // 4. Cumple ISP: interfaces segregadas
   }
 }

@@ -4,39 +4,6 @@
 from abc import ABC, abstractmethod
 
 
-# ✅ Estrategias de envío para tests
-class ShippingStrategy(ABC):
-    @abstractmethod
-    def calculate(self, weight: float) -> float:
-        pass
-
-
-class StandardShipping(ShippingStrategy):
-    def calculate(self, weight: float) -> float:
-        return 10.0  # Costo fijo para tests
-
-
-class ExpressShipping(ShippingStrategy):
-    def calculate(self, weight: float) -> float:
-        return 20.0
-
-
-class OvernightShipping(ShippingStrategy):
-    def calculate(self, weight: float) -> float:
-        return 50.0
-
-
-class ShippingCalculator:
-    def __init__(self, strategy: ShippingStrategy):
-        self.strategy = strategy
-
-    def set_strategy(self, strategy: ShippingStrategy) -> None:
-        self.strategy = strategy
-
-    def calculate_cost(self, weight: float) -> float:
-        return self.strategy.calculate(weight)
-
-
 # ✅ Interfaz de estrategia define comportamiento común
 class DiscountStrategy(ABC):
     @abstractmethod

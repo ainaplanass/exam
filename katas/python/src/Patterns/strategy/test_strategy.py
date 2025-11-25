@@ -4,102 +4,112 @@ Valida tanto las implementaciones malas como las buenas
 """
 
 import pytest
-from strategy_bad import ShippingCalculator as ShippingCalculatorBad
-from strategy_good import ShippingCalculator as ShippingCalculatorGood, StandardShipping, ExpressShipping, OvernightShipping
+from strategy_bad import DiscountCalculator as DiscountCalculatorBad
+from strategy_good import (
+    DiscountCalculator as DiscountCalculatorGood,
+    RegularCustomerDiscount,
+    PremiumCustomerDiscount,
+    VIPCustomerDiscount,
+    EmployeeDiscount
+)
 
 
 class TestStrategyBad:
-    """Tests para la implementación sin patrón Strategy"""
+    """Tests para la implementación sin el patrón Strategy"""
 
-    def test_standard_shipping_cost(self):
-        """Verifica el cálculo de costo de envío estándar"""
-        calculator = ShippingCalculatorBad()
-        cost = calculator.calculate_shipping_cost(100, "standard")
-        assert cost == 10.0
+    def test_regular_customer(self):
+        """Verifica el cálculo de descuento para cliente regular"""
+        calculator = DiscountCalculatorBad()
+        discount = calculator.calculate_discount("regular", 100)
+        assert discount == 0
 
-    def test_express_shipping_cost(self):
-        """Verifica el cálculo de costo de envío express"""
-        calculator = ShippingCalculatorBad()
-        cost = calculator.calculate_shipping_cost(100, "express")
-        assert cost == 20.0
+    def test_premium_customer(self):
+        """Verifica el cálculo de descuento para cliente premium"""
+        calculator = DiscountCalculatorBad()
+        discount = calculator.calculate_discount("premium", 100)
+        assert discount == 10.0
 
-    def test_overnight_shipping_cost(self):
-        """Verifica el cálculo de costo de envío overnight"""
-        calculator = ShippingCalculatorBad()
-        cost = calculator.calculate_shipping_cost(100, "overnight")
-        assert cost == 50.0
+    def test_vip_customer(self):
+        """Verifica el cálculo de descuento para cliente VIP"""
+        calculator = DiscountCalculatorBad()
+        discount = calculator.calculate_discount("vip", 100)
+        assert discount == 20.0
 
-    def test_unknown_shipping_type(self):
-        """Verifica el manejo de tipos de envío desconocidos"""
-        calculator = ShippingCalculatorBad()
-        cost = calculator.calculate_shipping_cost(100, "unknown")
-        assert cost == 0
+    def test_employee(self):
+        """Verifica el cálculo de descuento para empleado"""
+        calculator = DiscountCalculatorBad()
+        discount = calculator.calculate_discount("employee", 100)
+        assert discount == 50.0
+
+    def test_unknown_customer_type(self):
+        """Verifica que tipos desconocidos lanzan error"""
+        calculator = DiscountCalculatorBad()
+        with pytest.raises(ValueError) as exc_info:
+            calculator.calculate_discount("unknown", 100)
+        assert "Tipo de cliente desconocido" in str(exc_info.value)
+
+    def test_supported_types(self):
+        """Verifica los tipos de cliente soportados"""
+        calculator = DiscountCalculatorBad()
+        types = calculator.get_supported_customer_types()
+        assert set(types) == {"regular", "premium", "vip", "employee"}
 
 
 class TestStrategyGood:
-    """Tests para la implementación con patrón Strategy"""
+    """Tests para la implementación con el patrón Strategy"""
 
-    def test_standard_shipping_strategy(self):
-        """Verifica la estrategia de envío estándar"""
-        strategy = StandardShipping()
-        cost = strategy.calculate(100)
-        assert cost == 10.0
+    def test_regular_customer(self):
+        """Verifica el cálculo de descuento para cliente regular"""
+        strategy = RegularCustomerDiscount()
+        calculator = DiscountCalculatorGood(strategy)
+        discount = calculator.calculate_discount(100)
+        assert discount == 0
 
-    def test_express_shipping_strategy(self):
-        """Verifica la estrategia de envío express"""
-        strategy = ExpressShipping()
-        cost = strategy.calculate(100)
-        assert cost == 20.0
+    def test_premium_customer(self):
+        """Verifica el cálculo de descuento para cliente premium"""
+        strategy = PremiumCustomerDiscount()
+        calculator = DiscountCalculatorGood(strategy)
+        discount = calculator.calculate_discount(100)
+        assert discount == 10.0
 
-    def test_overnight_shipping_strategy(self):
-        """Verifica la estrategia de envío overnight"""
-        strategy = OvernightShipping()
-        cost = strategy.calculate(100)
-        assert cost == 50.0
+    def test_vip_customer(self):
+        """Verifica el cálculo de descuento para cliente VIP"""
+        strategy = VIPCustomerDiscount()
+        calculator = DiscountCalculatorGood(strategy)
+        discount = calculator.calculate_discount(100)
+        assert discount == 20.0
 
-    def test_calculator_with_standard_strategy(self):
-        """Verifica el calculador con estrategia estándar"""
-        calculator = ShippingCalculatorGood(StandardShipping())
-        cost = calculator.calculate_cost(100)
-        assert cost == 10.0
+    def test_employee(self):
+        """Verifica el cálculo de descuento para empleado"""
+        strategy = EmployeeDiscount()
+        calculator = DiscountCalculatorGood(strategy)
+        discount = calculator.calculate_discount(100)
+        assert discount == 50.0
 
-    def test_calculator_with_express_strategy(self):
-        """Verifica el calculador con estrategia express"""
-        calculator = ShippingCalculatorGood(ExpressShipping())
-        cost = calculator.calculate_cost(100)
-        assert cost == 20.0
-
-    def test_calculator_with_overnight_strategy(self):
-        """Verifica el calculador con estrategia overnight"""
-        calculator = ShippingCalculatorGood(OvernightShipping())
-        cost = calculator.calculate_cost(100)
-        assert cost == 50.0
-
-    def test_strategy_can_be_changed(self):
+    def test_switch_strategy(self):
         """Verifica que se puede cambiar la estrategia en tiempo de ejecución"""
-        calculator = ShippingCalculatorGood(StandardShipping())
-        cost1 = calculator.calculate_cost(100)
-        assert cost1 == 10.0
+        calculator = DiscountCalculatorGood(RegularCustomerDiscount())
+        assert calculator.calculate_discount(100) == 0
 
-        calculator.set_strategy(ExpressShipping())
-        cost2 = calculator.calculate_cost(100)
-        assert cost2 == 20.0
+        calculator.set_strategy(VIPCustomerDiscount())
+        assert calculator.calculate_discount(100) == 20.0
 
-        calculator.set_strategy(OvernightShipping())
-        cost3 = calculator.calculate_cost(100)
-        assert cost3 == 50.0
+        calculator.set_strategy(EmployeeDiscount())
+        assert calculator.calculate_discount(100) == 50.0
 
-    def test_extensibility(self):
-        """Verifica que se pueden agregar nuevas estrategias fácilmente"""
-        from strategy_good import ShippingStrategy
+    def test_get_description(self):
+        """Verifica que cada estrategia tiene su descripción"""
+        regular = RegularCustomerDiscount()
+        assert "regular" in regular.get_description().lower()
 
-        class SameDayShipping(ShippingStrategy):
-            def calculate(self, weight: float) -> float:
-                return weight * 0.75  # $0.75 por kg
+        premium = PremiumCustomerDiscount()
+        assert "premium" in premium.get_description().lower()
 
-        calculator = ShippingCalculatorGood(SameDayShipping())
-        cost = calculator.calculate_cost(100)
-        assert cost == 75.0
+        vip = VIPCustomerDiscount()
+        assert "vip" in vip.get_description().lower()
+
+        employee = EmployeeDiscount()
+        assert "empleado" in employee.get_description().lower()
 
 
 if __name__ == "__main__":

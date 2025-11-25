@@ -42,29 +42,71 @@ Soluciones probadas para problemas comunes de diseño:
 
 ## 🚀 Preparativos
 
-### Prerequisitos
+### Prerequisitos - Instalación desde cero
+
+#### 1. Instalar Python
+
+**Windows:**
 
 ```bash
-# Verificar Python instalado
-python --version   # o python3 --version
-# Debe ser 3.10 o mayor
+# Opción A: Usando Chocolatey (recomendado)
+choco install python -y
+
+# Opción B: Descarga manual desde:
+# https://www.python.org/downloads/
+# IMPORTANTE: Marcar "Add Python to PATH" durante la instalación
 ```
 
-### Instalación
+**Linux/macOS:**
 
 ```bash
-# Crear entorno virtual (recomendado)
+# Ubuntu/Debian
+sudo apt update
+sudo apt install python3 python3-pip python3-venv -y
+
+# macOS (Homebrew)
+brew install python3
+```
+
+**Verificar instalación:**
+
+```bash
+python --version   # o python3 --version
+# Debe mostrar 3.10 o mayor
+pip --version      # Debe estar disponible
+```
+
+#### 2. Configurar entorno virtual e instalar dependencias
+
+```bash
+# Navegar a la carpeta del proyecto
 cd katas/python
+
+# Crear entorno virtual (recomendado)
 python -m venv venv
 
 # Activar entorno virtual
 # Windows:
 venv\Scripts\activate
+# Linux/macOS:
+source venv/bin/activate
+
+# Instalar pytest y dependencias
+pip install pytest
+
+# Verificar instalación
+pytest --version
+```
+
+venv\Scripts\activate
+
 # Linux/Mac:
+
 source venv/bin/activate
 
 # No se requieren paquetes adicionales
-```
+
+````
 
 ### Ejecutar Ejemplos
 
@@ -73,7 +115,7 @@ source venv/bin/activate
 python src/CleanCode/naming/naming_bad.py
 python3 src/SOLID/srp/srp_good.py
 python src/Patterns/factory/factory_good.py
-```
+````
 
 ### Ejemplo Completo
 

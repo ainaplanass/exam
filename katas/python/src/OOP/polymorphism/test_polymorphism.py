@@ -4,29 +4,29 @@ Valida tanto las implementaciones malas como las buenas
 """
 
 import pytest
-from polymorphism_bad import process_payment_bad
-from polymorphism_good import CreditCard, PayPal, Bitcoin, PaymentProcessor
+from polymorphism_bad import AnimalProcessor as AnimalProcessorBad, process_payment_bad
+from polymorphism_good import Dog, Cat, Bird, AnimalProcessor as AnimalProcessorGood
 
 
 class TestPolymorphismBad:
     """Tests para la implementación sin polimorfismo"""
 
-    def test_process_credit_card_payment(self):
+    def test_process_payment_credit_card(self):
         """Verifica el procesamiento de pago con tarjeta de crédito"""
         result = process_payment_bad("credit_card", 100)
         assert "Procesando pago de $100 con tarjeta de crédito" in result
 
-    def test_process_paypal_payment(self):
+    def test_process_payment_paypal(self):
         """Verifica el procesamiento de pago con PayPal"""
         result = process_payment_bad("paypal", 200)
         assert "Procesando pago de $200 con PayPal" in result
 
-    def test_process_bitcoin_payment(self):
+    def test_process_payment_bitcoin(self):
         """Verifica el procesamiento de pago con Bitcoin"""
         result = process_payment_bad("bitcoin", 300)
         assert "Procesando pago de $300 con Bitcoin" in result
 
-    def test_unknown_payment_method(self):
+    def test_process_payment_unknown(self):
         """Verifica el manejo de métodos de pago desconocidos"""
         result = process_payment_bad("unknown", 100)
         assert "Método de pago desconocido" in result
@@ -35,54 +35,89 @@ class TestPolymorphismBad:
 class TestPolymorphismGood:
     """Tests para la implementación con polimorfismo"""
 
-    def test_credit_card_payment(self):
-        """Verifica el procesamiento de pago con tarjeta de crédito"""
-        payment = CreditCard()
-        result = payment.process(100)
-        assert "Procesando pago de $100 con tarjeta de crédito" in result
+    def test_dog_behavior(self, capsys):
+        """Verifica el comportamiento del perro"""
+        dog = Dog("Rex")
+        dog.introduce()
+        dog.make_sound()
+        dog.feed()
+        dog.move()
 
-    def test_paypal_payment(self):
-        """Verifica el procesamiento de pago con PayPal"""
-        payment = PayPal()
-        result = payment.process(200)
-        assert "Procesando pago de $200 con PayPal" in result
+        captured = capsys.readouterr()
+        assert "Rex" in captured.out
+        assert "Guau" in captured.out
+        assert "croquetas" in captured.out
+        assert "corriendo" in captured.out
 
-    def test_bitcoin_payment(self):
-        """Verifica el procesamiento de pago con Bitcoin"""
-        payment = Bitcoin()
-        result = payment.process(300)
-        assert "Procesando pago de $300 con Bitcoin" in result
+    def test_cat_behavior(self, capsys):
+        """Verifica el comportamiento del gato"""
+        cat = Cat("Luna")
+        cat.introduce()
+        cat.make_sound()
+        cat.feed()
+        cat.move()
 
-    def test_polymorphic_behavior(self):
-        """Verifica el comportamiento polimórfico"""
-        processor = PaymentProcessor()
+        captured = capsys.readouterr()
+        assert "Luna" in captured.out
+        assert "Miau" in captured.out
+        assert "pescado" in captured.out
+        assert "saltando" in captured.out
 
-        # Diferentes métodos de pago, misma interfaz
-        payments = [
-            CreditCard(),
-            PayPal(),
-            Bitcoin()
+    def test_bird_behavior(self, capsys):
+        """Verifica el comportamiento del pájaro"""
+        bird = Bird("Piolín")
+        bird.introduce()
+        bird.make_sound()
+        bird.feed()
+        bird.move()
+
+        captured = capsys.readouterr()
+        assert "Piolín" in captured.out
+        assert "Pío" in captured.out
+        assert "semillas" in captured.out
+        assert "volando" in captured.out
+
+    def test_polymorphic_processing(self, capsys):
+        """Verifica el procesamiento polimórfico de múltiples animales"""
+        processor = AnimalProcessorGood()
+        animals = [
+            Dog("Rex"),
+            Cat("Luna"),
+            Bird("Piolín")
         ]
 
-        amounts = [100, 200, 300]
+        processor.process_animals(animals)
+        captured = capsys.readouterr()
 
-        for payment_method, amount in zip(payments, amounts):
-            result = processor.execute_payment(payment_method, amount)
-            assert f"${amount}" in result
+        # Verifica que todos los animales fueron procesados
+        assert "Rex" in captured.out
+        assert "Luna" in captured.out
+        assert "Piolín" in captured.out
+        assert "Guau" in captured.out
+        assert "Miau" in captured.out
+        assert "Pío" in captured.out
 
-    def test_extensibility(self):
-        """Verifica que se pueden agregar nuevos métodos de pago fácilmente"""
-        from polymorphism_good import PaymentMethod
+    def test_extensibility(self, capsys):
+        """Verifica que se pueden agregar nuevos animales sin modificar el procesador"""
+        from polymorphism_good import Animal
 
-        class ApplePay(PaymentMethod):
-            def process(self, amount: float) -> str:
-                return f"Procesando pago de ${amount} con Apple Pay"
+        class Fish(Animal):
+            def make_sound(self) -> None:
+                print(f"{self._name} hace burbujas: glu glu")
 
-        processor = PaymentProcessor()
-        apple_pay = ApplePay()
-        result = processor.execute_payment(apple_pay, 150)
-        assert "Apple Pay" in result
-        assert "$150" in result
+            def feed(self) -> None:
+                print(f"{self._name} está comiendo algas")
+
+            def move(self) -> None:
+                print(f"{self._name} está nadando")
+
+        processor = AnimalProcessorGood()
+        fish = Fish("Nemo")
+        processor.process_animals([fish])
+
+        captured = capsys.readouterr()
+        assert "Nemo" in captured.out
+        assert "glu glu" in captured.out
 
 
 if __name__ == "__main__":

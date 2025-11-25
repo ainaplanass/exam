@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 // Cumplimiento del OCP: Abierto para extensión, cerrado para modificación
-// Solución: Usar interfaces para que se puedan agregar nuevos animales sin cambiar el código existente
+// ✅ Solución: Usar interfaces para que se puedan agregar nuevos animales sin cambiar el código existente
 
 public class OcpGood {
     public static void main(String[] args) {

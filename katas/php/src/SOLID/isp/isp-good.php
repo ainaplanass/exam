@@ -1,66 +1,59 @@
 <?php
 // Cumplimiento del ISP: Dividir interfaz ancha en interfaces más pequeñas y enfocadas
-// Solución: Crear interfaces separadas para diferentes capacidades
+// ✅ Solución: Crear interfaces separadas para diferentes capacidades
 
-// Interfaces separadas para diferentes capacidades ✅
-interface Workable {
-    public function work(): string;
+// ✅ Interfaces segregadas (separadas) para cada capacidad
+interface Printable {
+    public function print(string $document): string;
 }
 
-interface Eatable {
-    public function eat(): string;
+interface Scannable {
+    public function scan(): string;
 }
 
-interface Sleepable {
-    public function sleep(): string;
+// ✅ Impresora simple solo implementa lo que necesita
+class SimplePrinter implements Printable {
+    public function print(string $document): string {
+        return "Imprimiendo documento: $document";
+    }
+    // ✅ No necesita implementar scan()
 }
 
-// Human implementa todas las interfaces (necesita todas las capacidades) ✅
-class Human implements Workable, Eatable, Sleepable {
-    public function work(): string {
-        return "Humano trabajando";
+// ✅ Escáner simple solo implementa lo que necesita
+class SimpleScanner implements Scannable {
+    public function scan(): string {
+        return "Escaneando documento...";
     }
-
-    public function eat(): string {
-        return "Humano comiendo";
-    }
-
-    public function sleep(): string {
-        return "Humano durmiendo";
-    }
+    // ✅ No necesita implementar print()
 }
 
-// Robot solo implementa lo que necesita ✅
-class Robot implements Workable {
-    public function work(): string {
-        return "Robot trabajando";
-    }
-    // ✅ ¡No necesita implementar eat() o sleep()!
-}
-
-// SuperHuman puede trabajar y tiene habilidades especiales
-class SuperHuman implements Workable, Sleepable {
-    public function work(): string {
-        return "SuperHumano trabajando a super velocidad";
+// ✅ Dispositivo multifunción implementa ambas interfaces
+class AdvancedPrinter implements Printable, Scannable {
+    public function print(string $document): string {
+        return "Imprimiendo documento: $document";
     }
 
-    public function sleep(): string {
-        return "SuperHumano durmiendo brevemente";
+    public function scan(): string {
+        return "Escaneando documento...";
     }
-    // ✅ No necesita comer (obtiene energía del sol)
 }
 
 // Uso - ¡sin más implementaciones forzadas!
-$human = new Human();
-$robot = new Robot();
-$superHuman = new SuperHuman();
+$simplePrinter = new SimplePrinter();
+$simpleScanner = new SimpleScanner();
+$advancedPrinter = new AdvancedPrinter();
 
-echo $human->work() . PHP_EOL; // ✅ Funciona
-echo $human->eat() . PHP_EOL; // ✅ Funciona
-echo $human->sleep() . PHP_EOL; // ✅ Funciona
+echo $simplePrinter->print("documento.pdf") . PHP_EOL; // ✅ Funciona
+// $simplePrinter->scan() - El método no existe (¡seguro en tiempo de compilación!)
 
-echo $robot->work() . PHP_EOL; // ✅ Funciona
-// $robot->eat() - El método no existe (¡seguro en tiempo de compilación!)
+echo $simpleScanner->scan() . PHP_EOL; // ✅ Funciona
+// $simpleScanner->print() - El método no existe (¡seguro en tiempo de compilación!)
 
-echo $superHuman->work() . PHP_EOL; // ✅ Funciona
-echo $superHuman->sleep() . PHP_EOL; // ✅ Funciona
+echo $advancedPrinter->print("documento.pdf") . PHP_EOL; // ✅ Funciona
+echo $advancedPrinter->scan() . PHP_EOL; // ✅ Funciona
+
+// ✅ Beneficios:
+// 1. Interfaces pequeñas y enfocadas
+// 2. Clases solo implementan lo que necesitan
+// 3. Sin métodos que lancen errores
+// 4. Cumple ISP: interfaces segregadas

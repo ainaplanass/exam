@@ -1,70 +1,63 @@
 package SOLID.isp;
 
 // Cumplimiento del ISP: Dividir interfaz ancha en interfaces más pequeñas y enfocadas
-// Solución: Crear interfaces separadas para diferentes capacidades
+// ✅ Solución: Crear interfaces separadas para diferentes capacidades
 
 public class IspGood {
     public static void main(String[] args) {
-        Human human = new Human();
-        Robot robot = new Robot();
-        SuperHuman superHuman = new SuperHuman();
+        SimplePrinter simplePrinter = new SimplePrinter();
+        SimpleScanner simpleScanner = new SimpleScanner();
+        AdvancedPrinter advancedPrinter = new AdvancedPrinter();
 
-        System.out.println(human.work()); // ✅ Funciona
-        System.out.println(human.eat()); // ✅ Funciona
-        System.out.println(human.sleep()); // ✅ Funciona
+        System.out.println(simplePrinter.print("documento.pdf")); // ✅ Funciona
+        // simplePrinter.scan() - El método no existe (¡seguro en tiempo de compilación!)
 
-        System.out.println(robot.work()); // ✅ Funciona
-        // robot.eat() - El método no existe (¡seguro en tiempo de compilación!)
+        System.out.println(simpleScanner.scan()); // ✅ Funciona
+        // simpleScanner.print() - El método no existe (¡seguro en tiempo de compilación!)
 
-        System.out.println(superHuman.work()); // ✅ Funciona
-        System.out.println(superHuman.sleep()); // ✅ Funciona
+        System.out.println(advancedPrinter.print("documento.pdf")); // ✅ Funciona
+        System.out.println(advancedPrinter.scan()); // ✅ Funciona
     }
 }
 
-// Interfaces separadas para diferentes capacidades ✅
-interface Workable {
-    String work();
+// ✅ Interfaces segregadas (separadas) para cada capacidad
+interface Printable {
+    String print(String document);
 }
 
-interface Eatable {
-    String eat();
+interface Scannable {
+    String scan();
 }
 
-interface Sleepable {
-    String sleep();
+// ✅ Impresora simple solo implementa lo que necesita
+class SimplePrinter implements Printable {
+    public String print(String document) {
+        return "Imprimiendo documento: " + document;
+    }
+    // ✅ No necesita implementar scan()
 }
 
-// Human implementa todas las interfaces (necesita todas las capacidades) ✅
-class Human implements Workable, Eatable, Sleepable {
-    public String work() {
-        return "Humano trabajando";
+// ✅ Escáner simple solo implementa lo que necesita
+class SimpleScanner implements Scannable {
+    public String scan() {
+        return "Escaneando documento...";
+    }
+    // ✅ No necesita implementar print()
+}
+
+// ✅ Dispositivo multifunción implementa ambas interfaces
+class AdvancedPrinter implements Printable, Scannable {
+    public String print(String document) {
+        return "Imprimiendo documento: " + document;
     }
 
-    public String eat() {
-        return "Humano comiendo";
-    }
-
-    public String sleep() {
-        return "Humano durmiendo";
+    public String scan() {
+        return "Escaneando documento...";
     }
 }
 
-// Robot solo implementa lo que necesita ✅
-class Robot implements Workable {
-    public String work() {
-        return "Robot trabajando";
-    }
-    // ✅ ¡No necesita implementar eat() o sleep()!
-}
-
-// SuperHuman puede trabajar y tiene habilidades especiales
-class SuperHuman implements Workable, Sleepable {
-    public String work() {
-        return "SuperHumano trabajando a super velocidad";
-    }
-
-    public String sleep() {
-        return "SuperHumano durmiendo brevemente";
-    }
-    // ✅ No necesita comer (obtiene energía del sol)
-}
+// ✅ Beneficios:
+// 1. Interfaces pequeñas y enfocadas
+// 2. Clases solo implementan lo que necesitan
+// 3. Sin métodos que lancen errores
+// 4. Cumple ISP: interfaces segregadas

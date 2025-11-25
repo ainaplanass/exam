@@ -5,33 +5,6 @@ from abc import ABC, abstractmethod
 from typing import List
 
 
-# ✅ Interfaz de método de pago para tests
-class PaymentMethod(ABC):
-    @abstractmethod
-    def process(self, amount: float) -> str:
-        pass
-
-
-class CreditCard(PaymentMethod):
-    def process(self, amount: float) -> str:
-        return f"Procesando pago de ${amount} con tarjeta de crédito"
-
-
-class PayPal(PaymentMethod):
-    def process(self, amount: float) -> str:
-        return f"Procesando pago de ${amount} con PayPal"
-
-
-class Bitcoin(PaymentMethod):
-    def process(self, amount: float) -> str:
-        return f"Procesando pago de ${amount} con Bitcoin"
-
-
-class PaymentProcessor:
-    def execute_payment(self, payment_method: PaymentMethod, amount: float) -> str:
-        return payment_method.process(amount)
-
-
 # ✅ Clase base abstracta define la interfaz común
 class Animal(ABC):
     def __init__(self, name: str):

@@ -1,75 +1,62 @@
 # Cumplimiento del ISP: Dividir interfaz ancha en interfaces más pequeñas y enfocadas
-# Solución: Crear interfaces separadas para diferentes capacidades
+# ✅ Solución: Crear interfaces separadas para diferentes capacidades
 
 from abc import ABC, abstractmethod
 
 
-# Interfaces separadas para diferentes capacidades ✅
-class Workable(ABC):
+# ✅ Interfaces segregadas (separadas) para cada capacidad
+class Printable(ABC):
     @abstractmethod
-    def work(self) -> str:
+    def print_document(self, document: str) -> str:
         pass
 
 
-class Eatable(ABC):
+class Scannable(ABC):
     @abstractmethod
-    def eat(self) -> str:
+    def scan(self) -> str:
         pass
 
 
-class Sleepable(ABC):
-    @abstractmethod
-    def sleep(self) -> str:
-        pass
+# ✅ Impresora simple solo implementa lo que necesita
+class SimplePrinter(Printable):
+    def print_document(self, document: str) -> str:
+        return f"Imprimiendo documento: {document}"
+    # ✅ No necesita implementar scan()
 
 
-# Human implementa todas las interfaces (necesita todas las capacidades) ✅
-class Human(Workable, Eatable, Sleepable):
-    def __init__(self, name: str):
-        self.name = name
-
-    def work(self) -> str:
-        return f"{self.name} está trabajando"
-
-    def eat(self) -> str:
-        return f"{self.name} está comiendo"
-
-    def sleep(self) -> str:
-        return f"{self.name} está durmiendo"
+# ✅ Escáner simple solo implementa lo que necesita
+class SimpleScanner(Scannable):
+    def scan(self) -> str:
+        return "Escaneando documento..."
+    # ✅ No necesita implementar print()
 
 
-# Robot solo implementa lo que necesita ✅
-class Robot(Workable):
-    def __init__(self, name: str):
-        self.name = name
+# ✅ Dispositivo multifunción implementa ambas interfaces
+class AdvancedPrinter(Printable, Scannable):
+    def print_document(self, document: str) -> str:
+        return f"Imprimiendo documento: {document}"
 
-    def work(self) -> str:
-        return f"{self.name} está trabajando"
-    # ✅ ¡No necesita implementar eat() o sleep()!
-
-
-# SuperHuman puede trabajar y tiene habilidades especiales
-class SuperHuman(Workable, Sleepable):
-    def work(self) -> str:
-        return "SuperHumano trabajando a super velocidad"
-
-    def sleep(self) -> str:
-        return "SuperHumano durmiendo brevemente"
-    # ✅ No necesita comer (obtiene energía del sol)
+    def scan(self) -> str:
+        return "Escaneando documento..."
 
 
 # Uso - ¡sin más implementaciones forzadas!
 if __name__ == "__main__":
-    human = Human()
-    robot = Robot()
-    super_human = SuperHuman()
+    simple_printer = SimplePrinter()
+    simple_scanner = SimpleScanner()
+    advanced_printer = AdvancedPrinter()
 
-    print(human.work())  # ✅ Funciona
-    print(human.eat())  # ✅ Funciona
-    print(human.sleep())  # ✅ Funciona
+    print(simple_printer.print_document("documento.pdf"))  # ✅ Funciona
+    # simple_printer.scan() - El método no existe (¡seguro en tiempo de compilación!)
 
-    print(robot.work())  # ✅ Funciona
-    # robot.eat() - El método no existe (¡seguro en tiempo de compilación!)
+    print(simple_scanner.scan())  # ✅ Funciona
+    # simple_scanner.print_document() - El método no existe (¡seguro en tiempo de compilación!)
 
-    print(super_human.work())  # ✅ Funciona
-    print(super_human.sleep())  # ✅ Funciona
+    print(advanced_printer.print_document("documento.pdf"))  # ✅ Funciona
+    print(advanced_printer.scan())  # ✅ Funciona
+
+    # ✅ Beneficios:
+    # 1. Interfaces pequeñas y enfocadas
+    # 2. Clases solo implementan lo que necesitan
+    # 3. Sin métodos que lancen errores
+    # 4. Cumple ISP: interfaces segregadas

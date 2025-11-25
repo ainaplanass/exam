@@ -1,5 +1,10 @@
 // Violación del DIP: Clase de alto nivel depende directamente de clase de bajo nivel
-// ❌ Problema: OrderService está fuertemente acoplado a MySQLDatabase
+// ❌ Problema: UserService está fuertemente acoplado a MySQLDatabase
+
+interface User {
+  email: string;
+  name: string;
+}
 
 // Módulo de bajo nivel (implementación concreta)
 class MySQLDatabase {
@@ -9,48 +14,19 @@ class MySQLDatabase {
 }
 
 // ❌ Módulo de alto nivel depende de módulo concreto de bajo nivel
-class OrderService {
-  private database: MySQLDatabase; // ❌ ¡Acoplamiento fuerte!
-
-  constructor(database: MySQLDatabase) {
-    this.database = database;
-  }
-
-  public processOrder(orderId: string): void {
-    console.log(`Procesando pedido ${orderId}`);
-
-    // ❌ ¡Directamente ligado a MySQL - no se puede cambiar de base de datos!
-    this.database.save(`Pedido ${orderId} procesado`);
-  }
-}
-
-// ❌ Problemas con este enfoque:
-// 1. No se puede cambiar fácilmente a PostgreSQL, MongoDB, etc.
-// 2. Difícil de probar (no se puede hacer mock de la base de datos fácilmente)
-// 3. OrderService sabe demasiado sobre los detalles de la base de datos
-
-const database = new MySQLDatabase();
-const orderService = new OrderService(database);
-orderService.processOrder("12345");
-
-// UserService for test compatibility
-interface User {
-  email: string;
-  name: string;
-}
-
 class UserService {
-  private database: MySQLDatabase;
+  private database: MySQLDatabase; // ❌ ¡Acoplamiento fuerte!
   private users: User[] = [];
 
   constructor() {
-    this.database = new MySQLDatabase();
+    this.database = new MySQLDatabase(); // ❌ Instancia directa de clase concreta
   }
 
   public saveUser(email: string, name: string): string {
     const user = { email, name };
     this.users.push(user);
     const result = `Guardado en MySQL: ${email}`;
+    // ❌ ¡Directamente ligado a MySQL - no se puede cambiar de base de datos!
     this.database.save(result);
     return result;
   }
@@ -60,4 +36,15 @@ class UserService {
   }
 }
 
-export { MySQLDatabase, OrderService, UserService };
+// Uso
+const service = new UserService();
+console.log(service.saveUser("john@example.com", "John Doe"));
+console.log(service.getUser("john@example.com"));
+
+// ❌ Problemas con este enfoque:
+// 1. No se puede cambiar fácilmente a PostgreSQL, MongoDB, etc.
+// 2. Difícil de probar (no se puede hacer mock de la base de datos fácilmente)
+// 3. UserService sabe demasiado sobre los detalles de implementación
+// 4. Violación de DIP: depende de implementación concreta, no de abstracción
+
+export { MySQLDatabase, UserService };

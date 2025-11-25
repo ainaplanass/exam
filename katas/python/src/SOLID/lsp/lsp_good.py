@@ -1,137 +1,98 @@
-# Cumplimiento del LSP: Jerarquía de herencia apropiada que no rompe expectativas
-# ✅ Solución: Usar abstracciones apropiadas que coincidan con el comportamiento del mundo real
+# Cumplimiento del LSP: Las subclases pueden sustituir a la clase base sin problemas
+# ✅ Solución: Separar jerarquías según capacidades reales
 
 from abc import ABC, abstractmethod
 
 
-# ✅ Solución correcta para Rectangle/Square usando interfaces
-class Shape(ABC):
-    @abstractmethod
-    def get_area(self) -> int:
-        pass
-
-
-class Rectangle(Shape):
-    def __init__(self, width: int, height: int):
-        self._width = width
-        self._height = height
-
-    def set_width(self, width: int) -> None:
-        self._width = width
-
-    def set_height(self, height: int) -> None:
-        self._height = height
-
-    def get_area(self) -> int:
-        return self._width * self._height
-
-
-class Square(Shape):
-    def __init__(self, side: int):
-        self._side = side
-
-    def set_side(self, side: int) -> None:
-        self._side = side
-
-    def get_area(self) -> int:
-        return self._side * self._side
-
-
-# Clase base para comportamiento común ✅
+# ✅ Clase base con comportamiento común a TODAS las aves
 class Animal(ABC):
-    @abstractmethod
+    def __init__(self, name: str):
+        self.name = name
+
+    # ✅ Comportamiento que TODAS las aves comparten
     def eat(self) -> str:
-        pass
+        return f"{self.name} está comiendo"
 
-    @abstractmethod
-    def make_sound(self) -> str:
-        pass
+    def sleep(self) -> str:
+        return f"{self.name} está durmiendo"
 
 
-# Interfaces separadas para diferentes capacidades ✅
-class Flyable(ABC):
-    @abstractmethod
+# ✅ Clase para aves que SÍ pueden volar
+class FlyingBird(Animal):
+    # ✅ Ahora fly() solo está en aves que pueden volar
     def fly(self) -> str:
-        pass
+        return f"{self.name} está volando"
 
 
-class Swimmable(ABC):
-    @abstractmethod
-    def swim(self) -> str:
-        pass
+# ✅ Clase para aves que NO pueden volar
+class FlightlessBird(Animal):
+    # ✅ Comportamiento específico de aves que no vuelan
+    def walk(self) -> str:
+        return f"{self.name} está caminando"
 
 
-# Aves que SÍ pueden volar ✅
-class Eagle(Animal, Flyable):
-    def eat(self) -> str:
-        return "Águila comiendo pescado"
-
-    def make_sound(self) -> str:
-        return "Águila: ¡Graznido!"
-
+# ✅ Eagle es un ave voladora
+class Eagle(FlyingBird):
     def fly(self) -> str:
-        return "¡Águila volando alto!"
+        return f"{self.name} vuela alto en el cielo"
 
 
-# Aves que NO pueden volar pero pueden nadar ✅
-class Penguin(Animal, Swimmable):
-    def eat(self) -> str:
-        return "Pingüino comiendo pescado"
-
-    def make_sound(self) -> str:
-        return "Pingüino: ¡Graznido!"
+# ✅ Duck es un ave voladora
+class Duck(FlyingBird):
+    def fly(self) -> str:
+        return f"{self.name} vuela sobre el lago"
 
     def swim(self) -> str:
-        return "Pingüino nadando con gracia"
+        return f"{self.name} está nadando"
 
 
-# Aves que pueden hacer ambas cosas ✅
-class Duck(Animal, Flyable, Swimmable):
-    def eat(self) -> str:
-        return "Pato comiendo semillas"
-
-    def make_sound(self) -> str:
-        return "Pato: ¡Cuac!"
-
-    def fly(self) -> str:
-        return "Pato volando al estanque"
-
+# ✅ Penguin es un ave que no vuela - hereda de FlightlessBird
+class Penguin(FlightlessBird):
     def swim(self) -> str:
-        return "Pato chapoteando en el agua"
+        return f"{self.name} está nadando"
+
+    def walk(self) -> str:
+        return f"{self.name} está caminando sobre el hielo"
 
 
-# Funciones que funcionan con contratos apropiados ✅
+# ✅ Funciones que trabajan con las jerarquías correctas
+def make_flying_bird_fly(bird: FlyingBird) -> str:
+    return bird.fly()  # ✅ Siempre funciona - todas pueden volar
+
+
 def feed_animal(animal: Animal) -> str:
-    return animal.eat()  # ✅ TODOS los animales pueden comer
+    return animal.eat()  # ✅ Funciona con TODAS las aves
 
 
-def make_flyable_creature_fly(creature: Flyable) -> str:
-    return creature.fly()  # ✅ Solo cosas que SÍ pueden volar
-
-
-def make_swimmable_creature_swim(creature: Swimmable) -> str:
-    return creature.swim()  # ✅ Solo cosas que SÍ pueden nadar
-
-
-# Probando - ¡sin fallos! ✅
+# Uso que demuestra el cumplimiento
 if __name__ == "__main__":
-    print("=== Pruebas de Animales con LSP ===")
+    print("=== Cumplimiento del LSP ===")
 
-    eagle = Eagle()
-    penguin = Penguin()
-    duck = Duck()
+    eagle = Eagle("Águila Real")
+    duck = Duck("Pato Silvestre")
+    penguin = Penguin("Pingüino Emperador")
 
-    # Todos los animales pueden ser tratados de la misma manera ✅
-    print("Alimentando:", feed_animal(eagle))
-    print("Alimentando:", feed_animal(penguin))
-    print("Alimentando:", feed_animal(duck))
+    # ✅ Funciones tipadas correctamente
+    print(make_flying_bird_fly(eagle))  # ✅ Funciona
+    print(make_flying_bird_fly(duck))  # ✅ Funciona
+    # make_flying_bird_fly(penguin)  # ✅ Error de tipo - ¡no compila!
 
-    # Solo a las criaturas voladoras se les pide volar ✅
-    print("Volando:", make_flyable_creature_fly(eagle))
-    print("Volando:", make_flyable_creature_fly(duck))
-    # ¡penguin no se le pide volar - seguro en tiempo de compilación!
+    # ✅ Todas las aves pueden comer
+    all_animals = [eagle, duck, penguin]
+    for animal in all_animals:
+        print(feed_animal(animal))  # ✅ Funciona para todas
 
-    # Solo a las criaturas nadadoras se les pide nadar ✅
-    print("Nadando:", make_swimmable_creature_swim(penguin))
-    print("Nadando:", make_swimmable_creature_swim(duck))
-    # ¡eagle no se le pide nadar - seguro en tiempo de compilación!
+    # ✅ Aves voladoras pueden volar
+    flying_birds = [eagle, duck]
+    for bird in flying_birds:
+        print(bird.fly())  # ✅ Seguro - todas vuelan
+
+    # ✅ Penguin tiene sus propios métodos
+    print(penguin.swim())
+    print(penguin.walk())
+
+# ✅ Beneficios:
+# 1. Cada subclase puede sustituir a su clase base correctamente
+# 2. No hay excepciones ni comportamientos inesperados
+# 3. El sistema de tipos ayuda a prevenir errores
+# 4. Cumple perfectamente el Liskov Substitution Principle

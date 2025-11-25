@@ -42,20 +42,45 @@ Soluciones probadas para problemas comunes de diseño:
 
 ## 🚀 Preparativos
 
-### Prerequisitos
+### Prerequisitos - Instalación desde cero
+
+#### 1. Instalar Node.js y npm
+
+**Windows:**
 
 ```bash
-# Verificar Node.js instalado
-node --version  # Debe ser v16 o mayor
+# Opción A: Usando Chocolatey (recomendado)
+choco install nodejs-lts -y
 
-# Verificar npm
-npm --version
+# Opción B: Descarga manual desde:
+# https://nodejs.org/ (descargar versión LTS)
 ```
 
-### Instalación
+**Linux/macOS:**
 
 ```bash
+# Ubuntu/Debian
+curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
+sudo apt-get install -y nodejs
+
+# macOS (Homebrew)
+brew install node
+```
+
+**Verificar instalación:**
+
+```bash
+node --version  # Debe mostrar v16 o mayor
+npm --version   # Debe mostrar 7.0 o mayor
+```
+
+#### 2. Instalar dependencias del proyecto
+
+```bash
+# Navegar a la carpeta del proyecto
 cd katas/typescript
+
+# Instalar TypeScript, Jest y todas las dependencias
 npm install
 ```
 

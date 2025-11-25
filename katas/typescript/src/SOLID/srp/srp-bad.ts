@@ -1,64 +1,37 @@
-// Violación del SRP: La clase User tiene demasiadas responsabilidades
-// Problema: Esta clase maneja datos de usuario Y envío de emails Y operaciones de archivos
+// Violación del SRP: La clase UserManager tiene demasiadas responsabilidades
+// ❌ Problema: Esta clase maneja validación de email Y validación de nombre Y creación de usuarios
 
-class User {
-  public name: string;
-  public email: string;
-
-  constructor(name: string, email: string) {
-    this.name = name;
-    this.email = email;
-  }
-
-  // Responsabilidad 1: Gestión de datos de usuario ✅ (pertenece aquí)
-  public getName(): string {
-    return this.name;
-  }
-
-  public getEmail(): string {
-    return this.email;
-  }
-
-  // Responsabilidad 2: Operaciones de email ❌ (no pertenece aquí)
-  public sendWelcomeEmail(): string {
-    return `Enviando email de bienvenida a ${this.email}`;
-  }
-
-  public sendPasswordResetEmail(): string {
-    return `Enviando email de restablecimiento de contraseña a ${this.email}`;
-  }
-
-  // Responsabilidad 3: Operaciones de archivos ❌ (no pertenece aquí)
-  public saveToFile(): string {
-    return `Guardando usuario ${this.name} en archivo`;
-  }
-
-  public loadFromFile(): string {
-    return `Cargando datos de usuario desde archivo`;
-  }
-}
-
-// Problemas con este enfoque:
-// 1. Si el sistema de email cambia, modificamos la clase User
-// 2. Si el formato de archivo cambia, modificamos la clase User
-// 3. La clase se vuelve grande y difícil de mantener
-// 4. Difícil de probar las responsabilidades individuales
-
-// UserManager for test compatibility
 class UserManager {
+  // ❌ Responsabilidad 1: Creación de usuarios
   public createUser(email: string, name: string): boolean {
+    // ❌ Responsabilidad 2: Validación de email (debería estar en otra clase)
     if (!this.isValidEmail(email)) {
       return false;
     }
+    // ❌ Responsabilidad 3: Validación de nombre (debería estar en otra clase)
     if (!name || name.trim().length === 0) {
       return false;
     }
     return true;
   }
 
+  // ❌ Lógica de validación mezclada con lógica de negocio
   private isValidEmail(email: string): boolean {
     return email.includes("@");
   }
 }
 
-export { User, UserManager };
+// Uso
+const manager = new UserManager();
+console.log(manager.createUser("john@example.com", "John Doe")); // true
+console.log(manager.createUser("invalid-email", "John Doe")); // false
+console.log(manager.createUser("john@example.com", "")); // false
+
+// ❌ Problemas con este enfoque:
+// 1. Si la validación de email cambia, modificamos UserManager
+// 2. Si la validación de nombre cambia, modificamos UserManager
+// 3. UserManager tiene múltiples razones para cambiar
+// 4. Difícil de probar las validaciones por separado
+// 5. Violación del SRP: más de una responsabilidad
+
+export { UserManager };

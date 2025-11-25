@@ -2,19 +2,6 @@
 # ❌ Problema: Para agregar un nuevo animal, debemos modificar la clase Communication
 
 
-# ❌ Calculadora de descuentos que viola OCP
-class DiscountCalculator:
-    def calculate_discount(self, customer_type: str, price: float) -> float:
-        if customer_type == "regular":
-            return price * 0.95  # 5% de descuento
-        elif customer_type == "vip":
-            return price * 0.80  # 20% de descuento
-        elif customer_type == "student":
-            return price * 0.85  # 15% de descuento
-        else:
-            return price  # Sin descuento
-
-
 class Dog:
     def make_sound(self) -> str:
         return "woof woof"
@@ -41,11 +28,11 @@ class Communication:
         elif isinstance(animal, Fox):
             return animal.make_sound()
         else:
-            raise Exception("Animal desconocido")
+            raise ValueError("Animal desconocido")
 
 
+# Uso
 if __name__ == "__main__":
-    # Uso
     communication = Communication()
     dog = Dog()
     cat = Cat()
@@ -58,5 +45,5 @@ if __name__ == "__main__":
 
     # ❌ Problema: Para agregar Cow, debemos:
     # 1. Crear la clase Cow
-    # 2. Modificar el tipo de parámetro en communicate() ❌
+    # 2. Modificar el método communicate() ❌
     # 3. Agregar una nueva rama if/else ❌

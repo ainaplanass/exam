@@ -42,19 +42,75 @@ Soluciones probadas para problemas comunes de diseño:
 
 ## 🚀 Preparativos
 
-### Prerequisitos
+### Prerequisitos - Instalación desde cero
+
+#### 1. Instalar JDK (Java Development Kit)
+
+**Windows:**
 
 ```bash
-# Verificar Java instalado
-java --version   # Debe ser 11 o mayor
-javac --version  # Debe ser 11 o mayor
+# Opción A: Usando Chocolatey (recomendado)
+choco install openjdk11 -y
+# O para la última versión LTS:
+choco install openjdk -y
+
+# Opción B: Descarga manual desde:
+# https://adoptium.net/
 ```
 
-### Instalación
+**Linux/macOS:**
 
 ```bash
-# No se requiere instalación adicional
-# Solo necesitas el JDK
+# Ubuntu/Debian
+sudo apt update
+sudo apt install openjdk-11-jdk -y
+
+# macOS (Homebrew)
+brew install openjdk@11
+```
+
+**Verificar instalación:**
+
+```bash
+java --version   # Debe mostrar 11 o mayor
+javac --version  # Compilador de Java
+```
+
+#### 2. Instalar Maven (para gestión de dependencias y tests)
+
+**Windows:**
+
+```bash
+choco install maven -y
+```
+
+**Linux/macOS:**
+
+```bash
+# Ubuntu/Debian
+sudo apt install maven -y
+
+# macOS (Homebrew)
+brew install maven
+```
+
+**Verificar instalación:**
+
+```bash
+mvn --version
+```
+
+#### 3. Configurar el proyecto
+
+```bash
+# Navegar a la carpeta del proyecto
+cd katas/java
+
+# Compilar el proyecto (si existe pom.xml)
+mvn compile
+
+# Descargar dependencias de testing (JUnit)
+mvn test-compile
 ```
 
 ### Ejecutar Ejemplos

@@ -54,7 +54,7 @@ class AnimalProcessor:
             print(f"{animal['name']} está volando")
 
 
-# ❌ Función con lógica condicional para tipos de pago
+# ❌ Función con lógica condicional para tipos de pago (ejemplo secundario)
 def process_payment_bad(payment_type: str, amount: float) -> str:
     if payment_type == "credit_card":
         return f"Procesando pago de ${amount} con tarjeta de crédito"

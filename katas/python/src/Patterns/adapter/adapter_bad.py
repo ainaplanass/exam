@@ -2,18 +2,6 @@
 # ❌ Problema: Clases de terceros tienen interfaces diferentes
 
 
-# Sistema de pago legacy (para tests)
-class LegacyPaymentSystem:
-    def make_payment_old_way(self, account: str, amount: float) -> str:
-        return f"Procesando pago antiguo - Account: {account}, Amount: {amount}"
-
-
-# ❌ Función wrapper para convertir la interfaz
-def process_payment_bad(account: str, amount: float) -> str:
-    legacy = LegacyPaymentSystem()
-    return legacy.make_payment_old_way(account, amount)
-
-
 # Reproductor de audio de terceros (no podemos modificar esto)
 class MP3Player:
     def play_mp3(self, filename: str) -> str:

@@ -2,26 +2,26 @@
 // ❌ Problema: Para agregar un nuevo animal, debemos modificar la clase Communication
 
 class Dog {
-  public makeSound(): string {
+  makeSound(): string {
     return "woof woof";
   }
 }
 
 class Cat {
-  public makeSound(): string {
+  makeSound(): string {
     return "meow meow";
   }
 }
 
 class Fox {
-  public makeSound(): string {
+  makeSound(): string {
     return "ring-ding-ding-ding-dingeringeding";
   }
 }
 
 // ❌ Esta clase debe modificarse cada vez que agregamos un nuevo animal
 class Communication {
-  public communicate(animal: Dog | Cat | Fox): string {
+  communicate(animal: Dog | Cat | Fox): string {
     // ❌ Cadena de if/else que debe modificarse para cada nuevo animal
     if (animal instanceof Dog) {
       return animal.makeSound();
@@ -47,21 +47,7 @@ console.log(communication.communicate(fox)); // "ring-ding-ding-ding-dingeringed
 
 // ❌ Problema: Para agregar Cow, debemos:
 // 1. Crear la clase Cow
-// 2. Modificar el tipo de parámetro en communicate() ❌
+// 2. Modificar el método communicate() ❌
 // 3. Agregar una nueva rama if/else ❌
 
-// DiscountCalculator for test compatibility
-class DiscountCalculator {
-  public calculateDiscount(amount: number, customerType: string): number {
-    if (customerType === "regular") {
-      return amount * 0.05;
-    } else if (customerType === "vip") {
-      return amount * 0.2;
-    } else if (customerType === "new") {
-      return amount * 0.1;
-    }
-    return 0;
-  }
-}
-
-export { Dog, Cat, Fox, Communication, DiscountCalculator };
+export { Dog, Cat, Fox, Communication };

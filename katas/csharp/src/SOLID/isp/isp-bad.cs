@@ -1,50 +1,42 @@
 using System;
 
 // Violación del ISP: Interfaz ancha fuerza a las clases a implementar métodos que no usan
-// ❌ Problema: Todos los trabajadores deben implementar todos los métodos, incluso si no los necesitan
+// ❌ Problema: Todos los dispositivos deben implementar todos los métodos, incluso si no los necesitan
 
-public interface IWorker
+// ❌ Interfaz ancha que fuerza a todos los dispositivos a implementar todo
+public interface IDevice
 {
-  string Work();
-  string Eat();
-  string Sleep();
+  string Print(string document);
+  string Scan();
 }
 
-public class Human : IWorker
+// ❌ Impresora simple forzada a implementar Scan()
+public class SimplePrinter : IDevice
 {
-  public string Work()
+  public string Print(string document)
   {
-    return "Humano trabajando";
+    return $"Imprimiendo documento: {document}";
   }
 
-  public string Eat()
+  // ❌ Forzada a implementar Scan() aunque no puede escanear
+  public string Scan()
   {
-    return "Humano comiendo";
-  }
-
-  public string Sleep()
-  {
-    return "Humano durmiendo";
+    throw new Exception("¡Esta impresora no puede escanear!");
   }
 }
 
-public class Robot : IWorker
+// ❌ Escáner simple forzado a implementar Print()
+public class SimpleScanner : IDevice
 {
-  public string Work()
+  // ❌ Forzado a implementar Print() aunque no puede imprimir
+  public string Print(string document)
   {
-    return "Robot trabajando";
+    throw new Exception("¡Este escáner no puede imprimir!");
   }
 
-  // ❌ Los robots no comen, pero están forzados a implementar esto
-  public string Eat()
+  public string Scan()
   {
-    throw new Exception("¡Los robots no comen!");
-  }
-
-  // ❌ Los robots no duermen, pero están forzados a implementar esto
-  public string Sleep()
-  {
-    throw new Exception("¡Los robots no duermen!");
+    return "Escaneando documento...";
   }
 }
 
@@ -53,15 +45,13 @@ class Program
 {
   static void Main()
   {
-    var human = new Human();
-    var robot = new Robot();
+    var simplePrinter = new SimplePrinter();
+    var simpleScanner = new SimpleScanner();
 
-    Console.WriteLine(human.Work()); // ✅ Funciona
-    Console.WriteLine(human.Eat()); // ✅ Funciona
-    Console.WriteLine(human.Sleep()); // ✅ Funciona
+    Console.WriteLine(simplePrinter.Print("documento.pdf")); // ✅ Funciona
+                                                             // Console.WriteLine(simplePrinter.Scan()); // ❌ ¡Lanza error!
 
-    Console.WriteLine(robot.Work()); // ✅ Funciona
-                                     // Console.WriteLine(robot.Eat());   // ❌ ¡Lanza error!
-                                     // Console.WriteLine(robot.Sleep()); // ❌ ¡Lanza error!
+    // Console.WriteLine(simpleScanner.Print("documento.pdf")); // ❌ ¡Lanza error!
+    Console.WriteLine(simpleScanner.Scan()); // ✅ Funciona
   }
 }

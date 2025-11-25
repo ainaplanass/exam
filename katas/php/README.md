@@ -42,28 +42,86 @@ Soluciones probadas para problemas comunes de diseño:
 
 ## 🚀 Preparativos
 
-### Prerequisitos
+### Prerequisitos - Instalación desde cero
+
+#### 1. Instalar PHP
+
+**Windows:**
 
 ```bash
-# Verificar PHP instalado
-php --version  # Debe ser 8.0 o mayor
+# Opción A: Usando Chocolatey (recomendado)
+# Ejecutar PowerShell como Administrador
+choco install php -y
+
+# Opción B: Descarga manual desde:
+# https://windows.php.net/download/
 ```
 
-### Instalación
+**Linux/macOS:**
 
 ```bash
-# No se requiere instalación adicional
-# Solo necesitas PHP 8.0+
+# Ubuntu/Debian
+sudo apt update
+sudo apt install php php-cli php-mbstring php-xml -y
+
+# macOS (Homebrew)
+brew install php
 ```
 
-### Ejecutar Ejemplos
+**Verificar instalación:**
 
 ```bash
+php --version  # Debe mostrar 8.0 o mayor
+```
+
+#### 2. Instalar Composer (gestor de dependencias)
+
+**Windows:**
+
+```bash
+# Con Chocolatey
+choco install composer -y
+
+# O descarga manual desde:
+# https://getcomposer.org/download/
+```
+
+**Linux/macOS:**
+
+```bash
+# Descargar e instalar
+php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+php composer-setup.php
+sudo mv composer.phar /usr/local/bin/composer
+php -r "unlink('composer-setup.php');"
+```
+
+**Verificar instalación:**
+
+```bash
+composer --version
+```
+
+#### 3. Instalar dependencias del proyecto
+
+```bash
+# Navegar a la carpeta del proyecto
+cd katas/php
+
+# Instalar PHPUnit y otras dependencias
+composer install
+
+# Verificar PHPUnit
+vendor/bin/phpunit --version
+```
+
 # Ejecutar cualquier archivo directamente
+
 php src/CleanCode/naming/naming-bad.php
 php src/SOLID/srp/srp-good.php
 php src/Patterns/factory/factory-good.php
-```
+
+````
 
 ### Ejemplo Completo
 
@@ -82,7 +140,7 @@ php src/Patterns/builder/builder-exercise.php
 
 # 5. Ver la solución
 php src/Patterns/builder/builder-good.php
-```
+````
 
 ### Con Composer (Opcional)
 

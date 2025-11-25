@@ -1,76 +1,68 @@
-# Violación del LSP: Las clases derivadas rompen las expectativas de la clase padre
-# ❌ Problema: FlyingBird asume que TODOS los pájaros pueden volar
+# Violación del LSP: La subclase no puede sustituir a la clase base sin romper el comportamiento
+# ❌ Problema: Penguin hereda de Bird pero no puede volar, rompiendo las expectativas
 
 
-# ❌ Ejemplo adicional: Rectangle/Square que viola LSP
-class Rectangle:
-    def __init__(self, width: int, height: int):
-        self.width = width
-        self.height = height
-
-    def set_width(self, width: int) -> None:
-        self.width = width
-
-    def set_height(self, height: int) -> None:
-        self.height = height
-
-    def get_area(self) -> int:
-        return self.width * self.height
-
-
-class Square(Rectangle):
-    def __init__(self, side: int):
-        super().__init__(side, side)
-    
-    # ❌ Viola LSP: cambiar el ancho también cambia el alto
-    def set_width(self, width: int) -> None:
-        self.width = width
-        self.height = width  # ❌ Efecto secundario inesperado
-
-    def set_height(self, height: int) -> None:
-        self.width = height  # ❌ Efecto secundario inesperado
-        self.height = height
-
-
+# ❌ Clase base que asume que todas las aves vuelan
 class Bird:
+    def __init__(self, name: str):
+        self.name = name
+
+    # ❌ Método que asume que todas las aves pueden volar
     def fly(self) -> str:
-        return "¡Volando alto en el cielo!"
+        return f"{self.name} está volando"
 
     def eat(self) -> str:
-        return "Comiendo deliciosa comida"
+        return f"{self.name} está comiendo"
 
 
-# ❌ Problema: Penguin ES-UN Bird, ¡pero no puede volar!
-class Penguin(Bird):
-    def fly(self) -> str:
-        # ❌ Esto viola LSP - rompe la expectativa del padre
-        # ¡Comportamiento roto!
-        raise Exception("¡Los pingüinos no pueden volar!")
-
-    def swim(self) -> str:
-        return "Nadando con gracia"
-
-
+# ✅ Eagle puede volar - funciona bien
 class Eagle(Bird):
     def fly(self) -> str:
-        return "¡Volando como un águila!"
+        return f"{self.name} vuela alto en el cielo"
 
 
-# Esta función espera que TODOS los pájaros vuelen ❌
+# ❌ Penguin NO puede volar - ¡viola LSP!
+class Penguin(Bird):
+    def fly(self) -> str:
+        # ❌ Debe lanzar error o comportarse diferente a la clase base
+        raise Exception(f"{self.name} no puede volar - ¡es un pingüino!")
+
+    def swim(self) -> str:
+        return f"{self.name} está nadando"
+
+
+# ❌ Función que espera que TODAS las aves puedan volar
 def make_bird_fly(bird: Bird) -> str:
-    return bird.fly()  # ¡Esto lanzará un error para Penguin!
+    return bird.fly()  # ❌ ¡Falla con Penguin!
 
 
-# Probando la violación
+# Uso que demuestra la violación
 if __name__ == "__main__":
-    print("=== Demostración de Violación LSP ===")
+    print("=== Violación del LSP ===")
 
-    eagle = Eagle()
-    penguin = Penguin()
+    eagle = Eagle("Águila Real")
+    penguin = Penguin("Pingüino Emperador")
 
-    print("Águila:", make_bird_fly(eagle))  # ✅ Funciona bien
+    print(make_bird_fly(eagle))  # ✅ Funciona
 
     try:
-        print("Pingüino:", make_bird_fly(penguin))  # ❌ ¡SE ROMPE!
+        print(make_bird_fly(penguin))  # ❌ ¡Lanza error! Viola LSP
     except Exception as error:
-        print("ERROR:", str(error))
+        print(f"ERROR: {error}")
+
+    # ❌ El código debe verificar el tipo antes de usar
+    birds = [eagle, penguin]
+    for bird in birds:
+        print(bird.eat())  # ✅ Funciona para ambos
+
+        # ❌ Solución temporal incorrecta: verificar tipo
+        if isinstance(bird, Penguin):
+            print(bird.swim())
+        else:
+            print(bird.fly())
+
+# ❌ Problemas:
+# 1. Penguin no puede sustituir a Bird sin romper el código
+# 2. Necesitamos verificaciones de tipo (isinstance)
+# 3. El polimorfismo no funciona correctamente
+# 4. Violación clara del Liskov Substitution Principle

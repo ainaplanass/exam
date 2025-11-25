@@ -1,68 +1,23 @@
 // Cumplimiento del SRP: Cada clase tiene una única responsabilidad
-// Solución: Clases separadas para diferentes responsabilidades
+// ✅ Solución: Separar responsabilidades en clases especializadas
 
 interface User {
-  name: string;
   email: string;
+  name: string;
 }
 
-class UserClass implements User {
-  public name: string;
-  public email: string;
-
-  constructor(name: string, email: string) {
-    this.name = name;
-    this.email = email;
+// ✅ Clase 1: Solo responsable de validación
+class UserValidator {
+  public isValidEmail(email: string): boolean {
+    return email.includes("@");
   }
 
-  // Solo gestión de datos de usuario aquí ✅
-  public getName(): string {
-    return this.name;
-  }
-
-  public getEmail(): string {
-    return this.email;
+  public isValidName(name: string): boolean {
+    return name.trim().length > 0;
   }
 }
 
-// Clase separada para operaciones de email ✅
-class EmailService {
-  public sendWelcomeEmail(email: string): boolean {
-    console.log(`Enviando email de bienvenida a ${email}`);
-    return true;
-  }
-
-  public sendPasswordResetEmail(email: string): string {
-    return `Enviando email de restablecimiento de contraseña a ${email}`;
-  }
-}
-
-// Clase separada para operaciones de archivos ✅
-class UserFileManager {
-  public saveToFile(user: User): string {
-    return `Guardando usuario ${user.name} en archivo`;
-  }
-
-  public loadFromFile(fileName: string): string {
-    return `Cargando datos de usuario desde ${fileName}`;
-  }
-}
-
-// Ejemplo de uso
-const user: User = { name: "Juan Pérez", email: "juan@ejemplo.com" };
-const emailService = new EmailService();
-const fileManager = new UserFileManager();
-
-// Cada servicio maneja su propia responsabilidad
-emailService.sendWelcomeEmail(user.email);
-fileManager.saveToFile(user);
-
-// Beneficios:
-// 1. Cada clase tiene solo una razón para cambiar
-// 2. Fácil de probar responsabilidades individuales
-// 3. Se pueden reutilizar servicios para diferentes tipos de usuario
-// 4. El código está más organizado y es más mantenible
-
+// ✅ Clase 2: Solo responsable de almacenamiento
 class UserRepository {
   private users: User[] = [];
 
@@ -75,14 +30,38 @@ class UserRepository {
   }
 }
 
-class UserValidator {
-  public isValidEmail(email: string): boolean {
-    return email.includes("@");
+// ✅ Clase 3: Solo responsable de envío de emails
+class EmailService {
+  public sendWelcomeEmail(email: string): boolean {
+    console.log(`Enviando email de bienvenida a ${email}`);
+    return true;
   }
 
-  public isValidName(name: string): boolean {
-    return name.trim().length > 0;
+  public sendPasswordResetEmail(email: string): string {
+    return `Enviando email de restablecimiento de contraseña a ${email}`;
   }
 }
 
-export { User, EmailService, UserFileManager, UserRepository, UserValidator };
+// Uso - cada servicio maneja su responsabilidad
+const validator = new UserValidator();
+const repository = new UserRepository();
+const emailService = new EmailService();
+
+const email = "john@example.com";
+const name = "John Doe";
+
+if (validator.isValidEmail(email) && validator.isValidName(name)) {
+  const user: User = { email, name };
+  repository.save(user);
+  emailService.sendWelcomeEmail(email);
+  console.log("✅ Usuario creado exitosamente");
+}
+
+// ✅ Beneficios:
+// 1. Cada clase tiene solo una razón para cambiar
+// 2. Fácil de probar cada responsabilidad por separado
+// 3. Se pueden reutilizar servicios independientemente
+// 4. Código más organizado y mantenible
+// 5. Cumple el SRP: una sola responsabilidad por clase
+
+export { User, UserValidator, UserRepository, EmailService };

@@ -1,51 +1,52 @@
 # Violación del ISP: Interfaz ancha fuerza a las clases a implementar métodos que no usan
-# Problema: Todos los trabajadores deben implementar todos los métodos, incluso si no los necesitan
+# ❌ Problema: Todos los dispositivos deben implementar todos los métodos, incluso si no los necesitan
 
 from abc import ABC, abstractmethod
 
 
-class Worker(ABC):
+class Device(ABC):
     @abstractmethod
-    def work(self) -> str:
+    def print_document(self, document: str) -> str:
         pass
 
     @abstractmethod
-    def eat(self) -> str:
+    def scan(self) -> str:
         pass
 
 
-class Human(Worker):
-    def __init__(self, name: str):
-        self.name = name
+# ❌ Impresora simple debe implementar scan() aunque no lo necesite
+class Printer(Device):
+    def print_document(self, document: str) -> str:
+        return f"Imprimiendo documento: {document}"
 
-    def work(self) -> str:
-        return f"{self.name} está trabajando"
-
-    def eat(self) -> str:
-        return f"{self.name} está comiendo"
+    # ❌ Forzada a implementar scan() lanzando error
+    def scan(self) -> str:
+        raise NotImplementedError("¡Esta impresora no puede escanear!")
 
 
-class Robot(Worker):
-    def __init__(self, name: str):
-        self.name = name
+# ❌ Escáner simple debe implementar print() aunque no lo necesite
+class Scanner(Device):
+    def scan(self) -> str:
+        return "Escaneando documento..."
 
-    def work(self) -> str:
-        return f"{self.name} está trabajando"
-
-    # ❌ Los robots no comen, pero están forzados a implementar esto
-    def eat(self) -> str:
-        raise NotImplementedError("Los robots no comen")
+    # ❌ Forzada a implementar print() lanzando error
+    def print_document(self, document: str) -> str:
+        raise NotImplementedError("¡Este escáner no puede imprimir!")
 
 
 # Uso mostrando el problema
 if __name__ == "__main__":
-    human = Human()
-    robot = Robot()
+    printer = Printer()
+    scanner = Scanner()
 
-    print(human.work())  # ✅ Funciona
-    print(human.eat())  # ✅ Funciona
-    print(human.sleep())  # ✅ Funciona
+    print(printer.print_document("documento.pdf"))  # ✅ Funciona
+    # print(printer.scan())                          # ❌ ¡Lanza error!
 
-    print(robot.work())  # ✅ Funciona
-    # print(robot.eat())   # ❌ ¡Lanza error!
-    # print(robot.sleep()) # ❌ ¡Lanza error!
+    print(scanner.scan())  # ✅ Funciona
+    # print(scanner.print_document("documento.pdf")) # ❌ ¡Lanza error!
+
+    # ❌ Problemas:
+    # 1. Implementaciones forzadas que lanzan errores
+    # 2. Clases con métodos que nunca deberían existir
+    # 3. Interfaz demasiado ancha (no segregada)
+    # 4. Violación de ISP

@@ -1,142 +1,106 @@
-// Cumplimiento del LSP: Jerarquía de herencia apropiada que no rompe expectativas
-// ✅ Solución: Usar abstracciones apropiadas que coincidan con el comportamiento del mundo real
+// Cumplimiento del LSP: Las subclases pueden sustituir a la clase base sin problemas
+// ✅ Solución: Separar jerarquías según capacidades reales
 
-// Clase base para comportamiento común ✅
+// ✅ Clase base con comportamiento común a TODAS las aves
 abstract class Animal {
-  abstract eat(): string;
-  abstract makeSound(): string;
-}
+  constructor(public name: string) {}
 
-// Interfaces separadas para diferentes capacidades ✅
-interface Flyable {
-  fly(): string;
-}
-
-interface Swimmable {
-  swim(): string;
-}
-
-// Aves que SÍ pueden volar ✅
-class Eagle extends Animal implements Flyable {
+  // ✅ Comportamiento que TODAS las aves comparten
   public eat(): string {
-    return "Águila comiendo pescado";
+    return `${this.name} está comiendo`;
   }
 
-  public makeSound(): string {
-    return "Águila: ¡Graznido!";
+  public sleep(): string {
+    return `${this.name} está durmiendo`;
   }
+}
 
+// ✅ Clase para aves que SÍ pueden volar
+abstract class FlyingBird extends Animal {
+  // ✅ Ahora fly() solo está en aves que pueden volar
   public fly(): string {
-    return "¡Águila volando alto!";
+    return `${this.name} está volando`;
   }
 }
 
-// Aves que NO pueden volar pero pueden nadar ✅
-class Penguin extends Animal implements Swimmable {
-  public eat(): string {
-    return "Pingüino comiendo pescado";
+// ✅ Clase para aves que NO pueden volar
+abstract class FlightlessBird extends Animal {
+  // ✅ Comportamiento específico de aves que no vuelan
+  public walk(): string {
+    return `${this.name} está caminando`;
   }
+}
 
-  public makeSound(): string {
-    return "Pingüino: ¡Graznido!";
+// ✅ Eagle es un ave voladora
+class Eagle extends FlyingBird {
+  public fly(): string {
+    return `${this.name} vuela alto en el cielo`;
+  }
+}
+
+// ✅ Duck es un ave voladora
+class Duck extends FlyingBird {
+  public fly(): string {
+    return `${this.name} vuela sobre el lago`;
   }
 
   public swim(): string {
-    return "Pingüino nadando con gracia";
+    return `${this.name} está nadando`;
   }
 }
 
-// Aves que pueden hacer ambas cosas ✅
-class Duck extends Animal implements Flyable, Swimmable {
-  public eat(): string {
-    return "Pato comiendo semillas";
-  }
-
-  public makeSound(): string {
-    return "Pato: ¡Cuac!";
-  }
-
-  public fly(): string {
-    return "Pato volando al estanque";
-  }
-
+// ✅ Penguin es un ave que no vuela - hereda de FlightlessBird
+class Penguin extends FlightlessBird {
   public swim(): string {
-    return "Pato chapoteando en el agua";
+    return `${this.name} está nadando`;
+  }
+
+  public walk(): string {
+    return `${this.name} está caminando sobre el hielo`;
   }
 }
 
-// Funciones que funcionan con contratos apropiados ✅
+// ✅ Funciones que trabajan con las jerarquías correctas
+function makeFlyingBirdFly(bird: FlyingBird): string {
+  return bird.fly(); // ✅ Siempre funciona - todas pueden volar
+}
+
 function feedAnimal(animal: Animal): string {
-  return animal.eat(); // ✅ TODOS los animales pueden comer
+  return animal.eat(); // ✅ Funciona con TODAS las aves
 }
 
-function makeFlyableCreatureFly(creature: Flyable): string {
-  return creature.fly(); // ✅ Solo cosas que SÍ pueden volar
-}
+// Uso que demuestra el cumplimiento
+console.log("=== Cumplimiento del LSP ===");
 
-function makeSwimmableCreatureSwim(creature: Swimmable): string {
-  return creature.swim(); // ✅ Solo cosas que SÍ pueden nadar
-}
+const eagle = new Eagle("Águila Real");
+const duck = new Duck("Pato Silvestre");
+const penguin = new Penguin("Pingüino Emperador");
 
-// Probando - ¡sin fallos! ✅
-console.log("=== Pruebas de Animales con LSP ===");
+// ✅ Funciones tipadas correctamente
+console.log(makeFlyingBirdFly(eagle)); // ✅ Funciona
+console.log(makeFlyingBirdFly(duck)); // ✅ Funciona
+// makeFlyingBirdFly(penguin); // ✅ Error de compilación - ¡no compila!
 
-const eagle = new Eagle();
-const penguin = new Penguin();
-const duck = new Duck();
+// ✅ Todas las aves pueden comer
+const allAnimals: Animal[] = [eagle, duck, penguin];
+allAnimals.forEach((animal) => {
+  console.log(feedAnimal(animal)); // ✅ Funciona para todas
+});
 
-// Todos los animales pueden ser tratados de la misma manera ✅
-console.log("Alimentando:", feedAnimal(eagle));
-console.log("Alimentando:", feedAnimal(penguin));
-console.log("Alimentando:", feedAnimal(duck));
+// ✅ Aves voladoras pueden volar
+const flyingBirds: FlyingBird[] = [eagle, duck];
+flyingBirds.forEach((bird) => {
+  console.log(bird.fly()); // ✅ Seguro - todas vuelan
+});
 
-// Solo a las criaturas voladoras se les pide volar ✅
-console.log("Volando:", makeFlyableCreatureFly(eagle));
-console.log("Volando:", makeFlyableCreatureFly(duck));
-// ¡penguin no se le pide volar - seguro en tiempo de compilación!
+// ✅ Penguin tiene sus propios métodos
+console.log(penguin.swim());
+console.log(penguin.walk());
 
-// Solo a las criaturas nadadoras se les pide nadar ✅
-console.log("Nadando:", makeSwimmableCreatureSwim(penguin));
-console.log("Nadando:", makeSwimmableCreatureSwim(duck));
-// ¡eagle no se le pide nadar - seguro en tiempo de compilación!
+// ✅ Beneficios:
+// 1. Cada subclase puede sustituir a su clase base correctamente
+// 2. No hay excepciones ni comportamientos inesperados
+// 3. El sistema de tipos ayuda a prevenir errores
+// 4. Cumple perfectamente el Liskov Substitution Principle
 
-// Rectangle and Square for test compatibility
-class Rectangle {
-  protected width: number;
-  protected height: number;
-
-  constructor(width: number, height: number) {
-    this.width = width;
-    this.height = height;
-  }
-
-  public setWidth(width: number): void {
-    this.width = width;
-  }
-
-  public setHeight(height: number): void {
-    this.height = height;
-  }
-
-  public calculateArea(): number {
-    return this.width * this.height;
-  }
-}
-
-class Square {
-  private side: number;
-
-  constructor(side: number) {
-    this.side = side;
-  }
-
-  public setSide(side: number): void {
-    this.side = side;
-  }
-
-  public calculateArea(): number {
-    return this.side * this.side;
-  }
-}
-
-export { Animal, Flyable, Swimmable, Eagle, Penguin, Duck, feedAnimal, makeFlyableCreatureFly, makeSwimmableCreatureSwim, Rectangle, Square };
+export { Animal, FlyingBird, FlightlessBird, Eagle, Duck, Penguin, makeFlyingBirdFly, feedAnimal };

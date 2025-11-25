@@ -1,6 +1,6 @@
 <?php
 // Cumplimiento del OCP: Abierto para extensión, cerrado para modificación
-// Solución: Usar interfaces para que se puedan agregar nuevos animales sin cambiar el código existente
+// ✅ Solución: Usar interfaces para que se puedan agregar nuevos animales sin cambiar el código existente
 
 interface Communicable {
     public function communicate(): string;

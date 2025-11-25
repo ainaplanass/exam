@@ -1,62 +1,45 @@
 // Violación del Patrón Strategy: Algoritmos codificados con cadenas if/else
-// ❌ Problema: Toda la lógica de cálculo de descuentos mezclada en una clase
+// ❌ Problema: Toda la lógica de cálculo de envío mezclada en una clase
 
-class DiscountCalculator {
-  public calculateDiscount(customerType: string, orderAmount: number): number {
+class ShippingCalculator {
+  public calculateShipping(type: string, weight: number): number {
     // ❌ Todos los algoritmos mezclados con lógica condicional
-    if (customerType === "regular") {
-      // Cliente regular - sin descuento
-      return 0;
-    } else if (customerType === "premium") {
-      // Cliente premium - 10% de descuento
-      return orderAmount * 0.1;
-    } else if (customerType === "vip") {
-      // Cliente VIP - 20% de descuento
-      return orderAmount * 0.2;
-    } else if (customerType === "employee") {
-      // Empleado - 50% de descuento
-      return orderAmount * 0.5;
-    } else {
-      throw new Error(`Tipo de cliente desconocido: ${customerType}`);
+    if (type === "standard") {
+      // Envío estándar - peso + $5 tarifa base
+      return weight + 5;
+    } else if (type === "express") {
+      // Envío express - peso * 1.10 (10% adicional)
+      return Math.round(weight * 1.1 * 100) / 100;
+    } else if (type === "overnight") {
+      // Envío nocturno - peso * 1.20 (20% adicional)
+      return Math.round(weight * 1.2 * 100) / 100;
     }
+    // Tipo desconocido - retorna peso original
+    return weight;
   }
 
-  // ❌ Agregar nuevos tipos de cliente requiere modificar esta clase
-  public getSupportedCustomerTypes(): string[] {
-    return ["regular", "premium", "vip", "employee"];
+  // ❌ Agregar nuevos tipos de envío requiere modificar esta clase
+  public getSupportedShippingTypes(): string[] {
+    return ["standard", "express", "overnight"];
   }
 }
 
 // Uso mostrando los problemas
 console.log("=== Violación del Patrón Strategy ===");
 
-const calculator = new DiscountCalculator();
-const orderAmount = 100;
+const calculator = new ShippingCalculator();
+const weight = 100;
 
-console.log(`Monto del pedido: $${orderAmount}`);
-console.log(`Descuento regular: $${calculator.calculateDiscount("regular", orderAmount)}`);
-console.log(`Descuento premium: $${calculator.calculateDiscount("premium", orderAmount)}`);
-console.log(`Descuento VIP: $${calculator.calculateDiscount("vip", orderAmount)}`);
-console.log(`Descuento empleado: $${calculator.calculateDiscount("employee", orderAmount)}`);
+console.log(`Peso del paquete: ${weight} kg`);
+console.log(`Envío estándar: $${calculator.calculateShipping("standard", weight)}`);
+console.log(`Envío express: $${calculator.calculateShipping("express", weight)}`);
+console.log(`Envío nocturno: $${calculator.calculateShipping("overnight", weight)}`);
 
 // ❌ Problemas:
-// 1. Todos los algoritmos de descuento en una clase
-// 2. Agregar nuevo tipo de cliente requiere modificar DiscountCalculator
-// 3. No se pueden probar algoritmos de descuento individuales por separado
+// 1. Todos los algoritmos de envío en una clase
+// 2. Agregar nuevo tipo de envío requiere modificar ShippingCalculator
+// 3. No se pueden probar algoritmos de envío individuales por separado
 // 4. Viola el Principio Abierto/Cerrado
+// 5. Difícil de mantener con muchos tipos de envío
 
-// ShippingCalculator for test compatibility
-class ShippingCalculator {
-  public calculateShipping(type: string, weight: number): number {
-    if (type === "standard") {
-      return weight + 5;
-    } else if (type === "express") {
-      return Math.round(weight * 1.1 * 100) / 100;
-    } else if (type === "overnight") {
-      return Math.round(weight * 1.2 * 100) / 100;
-    }
-    return weight;
-  }
-}
-
-export { DiscountCalculator, ShippingCalculator };
+export { ShippingCalculator };

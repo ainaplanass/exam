@@ -1,55 +1,47 @@
 package SOLID.isp;
 
 // Violación del ISP: Interfaz ancha fuerza a las clases a implementar métodos que no usan
-// Problema: Todos los trabajadores deben implementar todos los métodos, incluso si no los necesitan
+// ❌ Problema: Todos los dispositivos deben implementar todos los métodos, incluso si no los necesitan
 
 public class IspBad {
     public static void main(String[] args) {
-        Human human = new Human();
-        Robot robot = new Robot();
+        SimplePrinter simplePrinter = new SimplePrinter();
+        SimpleScanner simpleScanner = new SimpleScanner();
 
-        System.out.println(human.work()); // ✅ Funciona
-        System.out.println(human.eat()); // ✅ Funciona
-        System.out.println(human.sleep()); // ✅ Funciona
+        System.out.println(simplePrinter.print("documento.pdf")); // ✅ Funciona
+        // System.out.println(simplePrinter.scan()); // ❌ ¡Lanza error!
 
-        System.out.println(robot.work()); // ✅ Funciona
-        // System.out.println(robot.eat());   // ❌ ¡Lanza error!
-        // System.out.println(robot.sleep()); // ❌ ¡Lanza error!
+        // System.out.println(simpleScanner.print("documento.pdf")); // ❌ ¡Lanza error!
+        System.out.println(simpleScanner.scan()); // ✅ Funciona
     }
 }
 
-interface Worker {
-    String work();
-    String eat();
-    String sleep();
+// ❌ Interfaz ancha que fuerza a todos los dispositivos a implementar todo
+interface Device {
+    String print(String document);
+    String scan();
 }
 
-class Human implements Worker {
-    public String work() {
-        return "Humano trabajando";
+// ❌ Impresora simple forzada a implementar scan()
+class SimplePrinter implements Device {
+    public String print(String document) {
+        return "Imprimiendo documento: " + document;
     }
 
-    public String eat() {
-        return "Humano comiendo";
-    }
-
-    public String sleep() {
-        return "Humano durmiendo";
+    // ❌ Forzada a implementar scan() aunque no puede escanear
+    public String scan() {
+        throw new UnsupportedOperationException("¡Esta impresora no puede escanear!");
     }
 }
 
-class Robot implements Worker {
-    public String work() {
-        return "Robot trabajando";
+// ❌ Escáner simple forzado a implementar print()
+class SimpleScanner implements Device {
+    // ❌ Forzado a implementar print() aunque no puede imprimir
+    public String print(String document) {
+        throw new UnsupportedOperationException("¡Este escáner no puede imprimir!");
     }
 
-    // ❌ Los robots no comen, pero están forzados a implementar esto
-    public String eat() {
-        throw new UnsupportedOperationException("¡Los robots no comen!");
-    }
-
-    // ❌ Los robots no duermen, pero están forzados a implementar esto
-    public String sleep() {
-        throw new UnsupportedOperationException("¡Los robots no duermen!");
+    public String scan() {
+        return "Escaneando documento...";
     }
 }

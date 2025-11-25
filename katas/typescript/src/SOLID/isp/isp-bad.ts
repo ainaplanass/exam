@@ -1,73 +1,49 @@
 // Violación del ISP: Interfaz ancha fuerza a las clases a implementar métodos que no usan
-// Problema: Todos los trabajadores deben implementar todos los métodos, incluso si no los necesitan
+// ❌ Problema: Todos los dispositivos deben implementar todos los métodos, incluso si no los necesitan
 
-interface Worker {
-  work(): string;
-  eat(): string;
-  sleep(): string;
+interface Device {
+  print(document: string): string;
+  scan(): string;
 }
 
-class Human implements Worker {
-  public work(): string {
-    return "Humano trabajando";
-  }
-
-  public eat(): string {
-    return "Humano comiendo";
-  }
-
-  public sleep(): string {
-    return "Humano durmiendo";
-  }
-}
-
-class Robot implements Worker {
-  public work(): string {
-    return "Robot trabajando";
-  }
-
-  // ❌ Los robots no comen, pero están forzados a implementar esto
-  public eat(): string {
-    throw new Error("¡Los robots no comen!");
-  }
-
-  // ❌ Los robots no duermen, pero están forzados a implementar esto
-  public sleep(): string {
-    throw new Error("¡Los robots no duermen!");
-  }
-}
-
-// Uso mostrando el problema
-const human = new Human();
-const robot = new Robot();
-
-console.log(human.work()); // ✅ Funciona
-console.log(human.eat()); // ✅ Funciona
-console.log(human.sleep()); // ✅ Funciona
-
-console.log(robot.work()); // ✅ Funciona
-// console.log(robot.eat());   // ❌ ¡Lanza error!
-// console.log(robot.sleep()); // ❌ ¡Lanza error!
-
-// Printer and Scanner for test compatibility
-class Printer {
+// ❌ Impresora simple debe implementar scan() aunque no lo necesite
+class Printer implements Device {
   public print(document: string): string {
     return `Imprimiendo documento: ${document}`;
   }
 
+  // ❌ Forzada a implementar scan() lanzando error
   public scan(): string {
     throw new Error("¡Esta impresora no puede escanear!");
   }
 }
 
-class Scanner {
+// ❌ Escáner simple debe implementar print() aunque no lo necesite
+class Scanner implements Device {
   public scan(): string {
     return "Escaneando documento...";
   }
 
+  // ❌ Forzada a implementar print() lanzando error
   public print(document: string): string {
     throw new Error("¡Este escáner no puede imprimir!");
   }
 }
 
-export { Worker, Human, Robot, Printer, Scanner };
+// Uso mostrando el problema
+const printer = new Printer();
+const scanner = new Scanner();
+
+console.log(printer.print("documento.pdf")); // ✅ Funciona
+// console.log(printer.scan());                // ❌ ¡Lanza error!
+
+console.log(scanner.scan()); // ✅ Funciona
+// console.log(scanner.print("documento.pdf")); // ❌ ¡Lanza error!
+
+// ❌ Problemas:
+// 1. Implementaciones forzadas que lanzan errores
+// 2. Clases con métodos que nunca deberían existir
+// 3. Interfaz demasiado ancha (no segregada)
+// 4. Violación de ISP
+
+export { Device, Printer, Scanner };

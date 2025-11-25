@@ -5,37 +5,7 @@ from abc import ABC, abstractmethod
 from typing import Dict
 
 
-# ✅ Sistema de pago legacy (para tests)
-class LegacyPaymentSystem:
-    def make_payment_old_way(self, account: str, amount: float) -> str:
-        return f"Procesando pago antiguo - Account: {account}, Amount: {amount}"
-
-
-# ✅ Interfaz moderna de procesamiento de pagos
-class PaymentProcessor(ABC):
-    @abstractmethod
-    def process_payment(self, account: str, amount: float) -> str:
-        pass
-
-
-# ✅ Adapter convierte interfaz legacy a interfaz moderna
-class PaymentAdapter(PaymentProcessor):
-    def __init__(self, legacy_system: LegacyPaymentSystem):
-        self.legacy_system = legacy_system
-
-    def process_payment(self, account: str, amount: float) -> str:
-        # Adapta la llamada al método legacy
-        return self.legacy_system.make_payment_old_way(account, amount)
-
-
-# ✅ Procesador moderno usa la interfaz PaymentProcessor
-class ModernPaymentProcessor:
-    def execute(self, processor: PaymentProcessor, account: str, amount: float) -> str:
-        result = processor.process_payment(account, amount)
-        return f"Ejecutando pago moderno: {result}"
-
-
-# Mismas clases de terceros (no podemos modificar estas)
+# Reproductor de audio de terceros (no podemos modificar esto)
 class MP3Player:
     def play_mp3(self, filename: str) -> str:
         return f"Reproduciendo MP3: {filename}"

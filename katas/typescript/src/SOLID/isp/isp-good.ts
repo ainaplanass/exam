@@ -1,70 +1,7 @@
 // Cumplimiento del ISP: Dividir interfaz ancha en interfaces más pequeñas y enfocadas
-// Solución: Crear interfaces separadas para diferentes capacidades
+// ✅ Solución: Crear interfaces separadas para diferentes capacidades
 
-// Interfaces separadas para diferentes capacidades ✅
-interface Workable {
-  work(): string;
-}
-
-interface Eatable {
-  eat(): string;
-}
-
-interface Sleepable {
-  sleep(): string;
-}
-
-// Human implementa todas las interfaces (necesita todas las capacidades) ✅
-class Human implements Workable, Eatable, Sleepable {
-  public work(): string {
-    return "Humano trabajando";
-  }
-
-  public eat(): string {
-    return "Humano comiendo";
-  }
-
-  public sleep(): string {
-    return "Humano durmiendo";
-  }
-}
-
-// Robot solo implementa lo que necesita ✅
-class Robot implements Workable {
-  public work(): string {
-    return "Robot trabajando";
-  }
-  // ✅ ¡No necesita implementar eat() o sleep()!
-}
-
-// SuperHuman puede trabajar y tiene habilidades especiales
-class SuperHuman implements Workable, Sleepable {
-  public work(): string {
-    return "SuperHumano trabajando a super velocidad";
-  }
-
-  public sleep(): string {
-    return "SuperHumano durmiendo brevemente";
-  }
-  // ✅ No necesita comer (obtiene energía del sol)
-}
-
-// Uso - ¡sin más implementaciones forzadas!
-const human = new Human();
-const robot = new Robot();
-const superHuman = new SuperHuman();
-
-console.log(human.work()); // ✅ Funciona
-console.log(human.eat()); // ✅ Funciona
-console.log(human.sleep()); // ✅ Funciona
-
-console.log(robot.work()); // ✅ Funciona
-// robot.eat() - El método no existe (¡seguro en tiempo de compilación!)
-
-console.log(superHuman.work()); // ✅ Funciona
-console.log(superHuman.sleep()); // ✅ Funciona
-
-// Printer and Scanner for test compatibility
+// ✅ Interfaces segregadas (separadas) para cada capacidad
 interface Printable {
   print(document: string): string;
 }
@@ -73,12 +10,23 @@ interface Scannable {
   scan(): string;
 }
 
+// ✅ Impresora simple solo implementa lo que necesita
 class SimplePrinter implements Printable {
   public print(document: string): string {
     return `Imprimiendo documento: ${document}`;
   }
+  // ✅ No necesita implementar scan()
 }
 
+// ✅ Escáner simple solo implementa lo que necesita
+class SimpleScanner implements Scannable {
+  public scan(): string {
+    return "Escaneando documento...";
+  }
+  // ✅ No necesita implementar print()
+}
+
+// ✅ Dispositivo multifunción implementa ambas interfaces
 class AdvancedPrinter implements Printable, Scannable {
   public print(document: string): string {
     return `Imprimiendo documento: ${document}`;
@@ -89,10 +37,24 @@ class AdvancedPrinter implements Printable, Scannable {
   }
 }
 
-class SimpleScanner implements Scannable {
-  public scan(): string {
-    return "Escaneando documento...";
-  }
-}
+// Uso - ¡sin más implementaciones forzadas!
+const simplePrinter = new SimplePrinter();
+const simpleScanner = new SimpleScanner();
+const advancedPrinter = new AdvancedPrinter();
 
-export { Workable, Eatable, Sleepable, Human, Robot, SuperHuman, Printable, Scannable, SimplePrinter, AdvancedPrinter, SimpleScanner };
+console.log(simplePrinter.print("documento.pdf")); // ✅ Funciona
+// simplePrinter.scan() - El método no existe (¡seguro en tiempo de compilación!)
+
+console.log(simpleScanner.scan()); // ✅ Funciona
+// simpleScanner.print() - El método no existe (¡seguro en tiempo de compilación!)
+
+console.log(advancedPrinter.print("documento.pdf")); // ✅ Funciona
+console.log(advancedPrinter.scan()); // ✅ Funciona
+
+// ✅ Beneficios:
+// 1. Interfaces pequeñas y enfocadas
+// 2. Clases solo implementan lo que necesitan
+// 3. Sin métodos que lancen errores
+// 4. Cumple ISP: interfaces segregadas
+
+export { Printable, Scannable, SimplePrinter, SimpleScanner, AdvancedPrinter };

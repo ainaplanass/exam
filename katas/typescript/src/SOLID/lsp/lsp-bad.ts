@@ -1,90 +1,71 @@
-// Violación del LSP: Las clases derivadas rompen las expectativas de la clase padre
-// ❌ Problema: FlyingBird asume que TODOS los pájaros pueden volar
+// Violación del LSP: La subclase no puede sustituir a la clase base sin romper el comportamiento
+// ❌ Problema: Penguin hereda de Bird pero no puede volar, rompiendo las expectativas
 
+// ❌ Clase base que asume que todas las aves vuelan
 class Bird {
+  constructor(public name: string) {}
+
+  // ❌ Método que asume que todas las aves pueden volar
   public fly(): string {
-    return "¡Volando alto en el cielo!";
+    return `${this.name} está volando`;
   }
 
   public eat(): string {
-    return "Comiendo deliciosa comida";
+    return `${this.name} está comiendo`;
   }
 }
 
-// ❌ Problema: Penguin ES-UN Bird, ¡pero no puede volar!
+// ✅ Eagle puede volar - funciona bien
+class Eagle extends Bird {
+  public fly(): string {
+    return `${this.name} vuela alto en el cielo`;
+  }
+}
+
+// ❌ Penguin NO puede volar - ¡viola LSP!
 class Penguin extends Bird {
   public fly(): string {
-    // ❌ Esto viola LSP - rompe la expectativa del padre
-    throw new Error("¡Los pingüinos no pueden volar!"); // ¡Comportamiento roto!
+    // ❌ Debe lanzar error o comportarse diferente a la clase base
+    throw new Error(`${this.name} no puede volar - ¡es un pingüino!`);
   }
 
   public swim(): string {
-    return "Nadando con gracia";
+    return `${this.name} está nadando`;
   }
 }
 
-class Eagle extends Bird {
-  public fly(): string {
-    return "¡Volando como un águila!";
-  }
-}
-
-// Esta función espera que TODOS los pájaros vuelen ❌
+// ❌ Función que espera que TODAS las aves puedan volar
 function makeBirdFly(bird: Bird): string {
-  return bird.fly(); // ¡Esto lanzará un error para Penguin!
+  return bird.fly(); // ❌ ¡Falla con Penguin!
 }
 
-// Probando la violación
-console.log("=== Demostración de Violación LSP ===");
+// Uso que demuestra la violación
+console.log("=== Violación del LSP ===");
 
-const eagle = new Eagle();
-const penguin = new Penguin();
+const eagle = new Eagle("Águila Real");
+const penguin = new Penguin("Pingüino Emperador");
 
-console.log("Águila:", makeBirdFly(eagle)); // ✅ Funciona bien
+console.log(makeBirdFly(eagle)); // ✅ Funciona
+// console.log(makeBirdFly(penguin)); // ❌ ¡Lanza error! Viola LSP
 
-try {
-  console.log("Pingüino:", makeBirdFly(penguin)); // ❌ ¡SE ROMPE!
-} catch (error) {
-  console.log("ERROR:", (error as Error).message);
-}
+// ❌ El código debe verificar el tipo antes de usar
+const birds: Bird[] = [eagle, penguin];
+birds.forEach((bird) => {
+  console.log(bird.eat()); // ✅ Funciona para ambos
+  // bird.fly(); // ❌ Fallaría con penguin
 
-// Rectangle and Square for test compatibility
-class Rectangle {
-  protected width: number;
-  protected height: number;
-
-  constructor(width: number, height: number) {
-    this.width = width;
-    this.height = height;
+  // ❌ Solución temporal incorrecta: verificar tipo
+  if (bird instanceof Penguin) {
+    console.log(bird.swim());
+  } else {
+    console.log(bird.fly());
   }
+});
 
-  public setWidth(width: number): void {
-    this.width = width;
-  }
+// ❌ Problemas:
+// 1. Penguin no puede sustituir a Bird sin romper el código
+// 2. Necesitamos verificaciones de tipo (instanceof)
+// 3. El polimorfismo no funciona correctamente
+// 4. Violación clara del Liskov Substitution Principle
 
-  public setHeight(height: number): void {
-    this.height = height;
-  }
-
-  public calculateArea(): number {
-    return this.width * this.height;
-  }
-}
-
-class Square extends Rectangle {
-  constructor(side: number) {
-    super(side, side);
-  }
-
-  public setWidth(width: number): void {
-    this.width = width;
-    this.height = width;
-  }
-
-  public setHeight(height: number): void {
-    this.width = height;
-    this.height = height;
-  }
-}
-
-export { Bird, Penguin, Eagle, makeBirdFly, Rectangle, Square };
+export { Bird, Eagle, Penguin, makeBirdFly };

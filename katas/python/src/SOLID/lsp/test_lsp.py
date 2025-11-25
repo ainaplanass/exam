@@ -4,75 +4,110 @@ Valida tanto las implementaciones malas como las buenas
 """
 
 import pytest
-from lsp_bad import Rectangle as RectangleBad, Square as SquareBad
-from lsp_good import Rectangle as RectangleGood, Square as SquareGood
+from lsp_bad import Bird as BirdBad, Eagle as EagleBad, Penguin as PenguinBad
+from lsp_good import (
+    Animal,
+    FlyingBird,
+    FlightlessBird,
+    Eagle as EagleGood,
+    Duck,
+    Penguin as PenguinGood
+)
 
 
 class TestLSPBad:
     """Tests para la implementación que viola LSP"""
 
-    def test_rectangle_area(self):
-        """Verifica el cálculo del área de un rectángulo"""
-        rect = RectangleBad(5, 4)
-        assert rect.get_area() == 20
+    def test_eagle_fly(self):
+        """Verifica que las águilas pueden volar"""
+        eagle = EagleBad("Águila")
+        assert "vuela alto" in eagle.fly()
 
-    def test_square_area(self):
-        """Verifica el cálculo del área de un cuadrado"""
-        square = SquareBad(5)
-        assert square.get_area() == 25
+    def test_eagle_eat(self):
+        """Verifica que las águilas pueden comer"""
+        eagle = EagleBad("Águila")
+        assert "comiendo" in eagle.eat()
 
-    def test_lsp_violation(self):
-        """Demuestra la violación de LSP: Square no puede sustituir a Rectangle"""
-        # Con Rectangle funciona como se espera
-        rect = RectangleBad(5, 4)
-        rect.set_width(3)
-        assert rect.get_area() == 12  # 3 * 4
+    def test_penguin_lsp_violation(self):
+        """Demuestra la violación de LSP: Penguin no puede sustituir a Bird"""
+        penguin = PenguinBad("Pingüino")
+        # Penguin hereda de Bird pero no puede volar - violación de LSP
+        with pytest.raises(Exception) as exc_info:
+            penguin.fly()
+        assert "no puede volar" in str(exc_info.value)
 
-        # Con Square el comportamiento es inesperado
-        square = SquareBad(5)
-        square.set_width(3)
-        # Al cambiar el ancho, también cambia el alto (violación de LSP)
-        assert square.get_area() == 9  # 3 * 3, no 3 * 5
+    def test_penguin_swim(self):
+        """Verifica que los pingüinos pueden nadar"""
+        penguin = PenguinBad("Pingüino")
+        assert "nadando" in penguin.swim()
 
 
 class TestLSPGood:
     """Tests para la implementación que cumple con LSP"""
 
-    def test_rectangle_area(self):
-        """Verifica el cálculo del área de un rectángulo"""
-        rect = RectangleGood(5, 4)
-        assert rect.get_area() == 20
+    def test_eagle_eat(self):
+        """Verifica que las águilas pueden comer"""
+        eagle = EagleGood("Águila")
+        assert "Águila está comiendo" in eagle.eat()
 
-    def test_rectangle_modification(self):
-        """Verifica la modificación independiente de dimensiones"""
-        rect = RectangleGood(5, 4)
-        rect.set_width(3)
-        rect.set_height(6)
-        assert rect.get_area() == 18
+    def test_eagle_fly(self):
+        """Verifica que las águilas pueden volar"""
+        eagle = EagleGood("Águila")
+        assert "vuela alto en el cielo" in eagle.fly()
 
-    def test_square_area(self):
-        """Verifica el cálculo del área de un cuadrado"""
-        square = SquareGood(5)
-        assert square.get_area() == 25
+    def test_duck_eat(self):
+        """Verifica que los patos pueden comer"""
+        duck = Duck("Pato")
+        assert "Pato está comiendo" in duck.eat()
 
-    def test_square_set_side(self):
-        """Verifica el cambio de lado del cuadrado"""
-        square = SquareGood(5)
-        square.set_side(7)
-        assert square.get_area() == 49
+    def test_duck_fly(self):
+        """Verifica que los patos pueden volar"""
+        duck = Duck("Pato")
+        assert "vuela sobre el lago" in duck.fly()
 
-    def test_lsp_compliance(self):
-        """Verifica que las clases cumplen con LSP mediante polimorfismo"""
-        from lsp_good import Shape
+    def test_duck_swim(self):
+        """Verifica que los patos pueden nadar"""
+        duck = Duck("Pato")
+        assert "Pato está nadando" in duck.swim()
 
-        shapes = [
-            RectangleGood(5, 4),
-            SquareGood(5)
+    def test_penguin_eat(self):
+        """Verifica que los pingüinos pueden comer"""
+        penguin = PenguinGood("Pingüino")
+        assert "Pingüino está comiendo" in penguin.eat()
+
+    def test_penguin_swim(self):
+        """Verifica que los pingüinos pueden nadar"""
+        penguin = PenguinGood("Pingüino")
+        assert "Pingüino está nadando" in penguin.swim()
+
+    def test_lsp_compliance_all_animals(self):
+        """Verifica que todas las aves cumplen con LSP mediante polimorfismo"""
+        animals = [
+            EagleGood("Águila"),
+            Duck("Pato"),
+            PenguinGood("Pingüino")
         ]
 
-        # Todas las formas pueden calcular su área
-        areas = [shape.get_area() for shape in shapes]
-        assert areas == [20, 25]
+        # Todos los animales pueden comer y dormir
+        for animal in animals:
+            assert isinstance(animal.eat(), str)
+            assert isinstance(animal.sleep(), str)
+
+    def test_flying_birds_can_fly(self):
+        """Verifica que solo las aves voladoras pueden volar"""
+        eagle = EagleGood("Águila")
+        duck = Duck("Pato")
+
+        assert isinstance(eagle.fly(), str)
+        assert isinstance(duck.fly(), str)
+
+    def test_swimming_birds_can_swim(self):
+        """Verifica que las aves nadadoras pueden nadar"""
+        duck = Duck("Pato")
+        penguin = PenguinGood("Pingüino")
+
+        assert isinstance(duck.swim(), str)
+        assert isinstance(penguin.swim(), str)
 
 
 if __name__ == "__main__":

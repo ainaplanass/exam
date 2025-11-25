@@ -4,19 +4,6 @@
 from typing import List
 
 
-class ShippingCalculator:
-    # ❌ Todos los algoritmos de envío en una clase
-    def calculate_shipping_cost(self, weight: float, shipping_type: str) -> float:
-        if shipping_type == "standard":
-            return 10.0  # Costo fijo para tests
-        elif shipping_type == "express":
-            return 20.0
-        elif shipping_type == "overnight":
-            return 50.0
-        else:
-            return 0
-
-
 class DiscountCalculator:
     def calculate_discount(self, customer_type: str, order_amount: float) -> float:
         # ❌ Todos los algoritmos mezclados con lógica condicional

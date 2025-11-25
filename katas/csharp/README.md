@@ -42,47 +42,59 @@ Soluciones probadas para problemas comunes de diseño:
 
 ## 🚀 Preparativos
 
-### Prerequisitos
+### Prerequisitos - Instalación desde cero
+
+#### 1. Instalar .NET SDK
+
+**Windows:**
 
 ```bash
-# Verificar .NET instalado
-dotnet --version  # Debe ser 6.0 o mayor
+# Opción A: Usando Chocolatey (recomendado)
+choco install dotnet-sdk -y
+
+# Opción B: Descarga manual desde:
+# https://dotnet.microsoft.com/download
 ```
 
-### Instalación
+**Linux/macOS:**
 
 ```bash
-# No se requiere instalación adicional
-# Solo necesitas el .NET SDK
+# Ubuntu/Debian
+wget https://dot.net/v1/dotnet-install.sh
+sudo bash dotnet-install.sh --channel 8.0
+
+# macOS (Homebrew)
+brew install dotnet-sdk
+```
+
+**Verificar instalación:**
+
+```bash
+dotnet --version  # Debe mostrar 6.0 o mayor
+```
+
+#### 2. Instalar dotnet-script (requerido para ejecutar ejemplos)
+
+```bash
+# Instalar globalmente (solo una vez)
+dotnet tool install -g dotnet-script
+
+# Verificar instalación
+dotnet script --version
 ```
 
 ### Ejecutar Ejemplos
 
-**Opción 1: Compilar y Ejecutar**
+**Forma recomendada: Usar dotnet script**
 
 ```bash
-# Compilar
-csc src/CleanCode/naming/naming-bad.cs
+# Navegar a la carpeta
+cd katas/csharp
 
-# Ejecutar
-./naming-bad.exe  # Windows
-./naming-bad      # Linux/Mac
-```
-
-**Opción 2: Usar dotnet script**
-
-```bash
-# Instalar dotnet-script (solo una vez)
-dotnet tool install -g dotnet-script
-
-# Ejecutar
+# Ejecutar cualquier ejemplo
 dotnet script src/CleanCode/naming/naming-bad.cs
-```
-
-**Opción 3: Usar dotnet run**
-
-```bash
-dotnet run --project src/CleanCode/naming/naming-bad.cs
+dotnet script src/SOLID/srp/srp-good.cs
+dotnet script src/OOP/polymorphism/polymorphism-bad.cs
 ```
 
 ### Ejemplo Completo
@@ -92,16 +104,16 @@ dotnet run --project src/CleanCode/naming/naming-bad.cs
 cd katas/csharp
 
 # 2. Ejecutar ejemplo malo
-csc src/SOLID/srp/srp-bad.cs && ./srp-bad.exe
+dotnet script src/SOLID/srp/srp-bad.cs
 
 # 3. Modificar el ejercicio
 code src/SOLID/srp/srp-exercise.cs
 
 # 4. Ejecutar tu solución
-csc src/SOLID/srp/srp-exercise.cs && ./srp-exercise.exe
+dotnet script src/SOLID/srp/srp-exercise.cs
 
 # 5. Ver la solución
-csc src/SOLID/srp/srp-good.cs && ./srp-good.exe
+dotnet script src/SOLID/srp/srp-good.cs
 ```
 
 ## 🎯 Formato de aprendizaje (20 minutos por concepto)
@@ -118,88 +130,76 @@ Cada carpeta incluye:
 1. Lee el README del concepto
 2. Ejecuta y analiza el ejemplo malo
    ```bash
-   dotnet run --project src/OOP/abstraction/abstraction-bad.cs
-   # O compile y ejecute:
-   csc src/OOP/abstraction/abstraction-bad.cs && ./abstraction-bad.exe
+   dotnet script src/OOP/abstraction/abstraction-bad.cs
    ```
 3. Aplica las técnicas y principios aprendidos para refactorizar el ejemplo malo
 4. Ejecuta tu solución
    ```bash
-   dotnet run --project src/OOP/abstraction/abstraction-exercise.cs
+   dotnet script src/OOP/abstraction/abstraction-exercise.cs
    ```
 5. Ejecuta y estudia el ejemplo bueno
    ```bash
-   dotnet run --project src/OOP/abstraction/abstraction-good.cs
+   dotnet script src/OOP/abstraction/abstraction-good.cs
    ```
 
 ### Ejecución de archivos individuales
 
 ```bash
-# Opción 1: Usando dotnet script (recomendado para ejemplos simples)
+# Opción recomendada: Usando dotnet script
 dotnet script src/CleanCode/naming/naming-bad.cs
-
-# Opción 2: Compilar y ejecutar
-csc src/CleanCode/naming/naming-bad.cs
-./naming-bad.exe
-
-# Opción 3: Usar dotnet run con un archivo específico
-dotnet run --project src/CleanCode/naming/naming-bad.cs
+dotnet script src/SOLID/srp/srp-good.cs
+dotnet script src/OOP/polymorphism/polymorphism-bad.cs
 ```
 
 ## 🧪 Tests Unitarios
 
 Cada concepto incluye tests unitarios completos usando **xUnit** para validar tanto las implementaciones malas como las buenas.
 
-### Instalación del framework de testing
+**Nota:** Los archivos de tests (`Tests.cs`) están incluidos en cada carpeta pero requieren configuración adicional para ejecutarse. Los ejemplos de código están diseñados para ser ejecutados directamente con `dotnet script`.
+
+### Ver los tests disponibles
 
 ```bash
-# Navegar a la carpeta del concepto
-cd src/CleanCode/naming
+# Navegar a cualquier carpeta de concepto
+cd src/Patterns/factory
 
-# Crear proyecto de tests con xUnit
-dotnet new xunit -n NamingTests
-
-# Agregar el archivo de tests al proyecto
-# Copiar Tests.cs al directorio del proyecto xUnit
-
-# Restaurar dependencias
-dotnet restore
+# Ver el archivo de tests
+code Tests.cs
 ```
 
-### Ejecutar todos los tests
+### Ejecutar tests (requiere configuración de proyecto)
+
+Para ejecutar los tests, necesitas crear un proyecto xUnit:
 
 ```bash
-# Desde la carpeta raíz de csharp
-# Ejecutar todos los tests (requiere configuración previa de proyectos)
-dotnet test
-
-# Ejecutar tests con salida detallada
-dotnet test -v detailed
-
-# Ejecutar tests con coverage
-dotnet test /p:CollectCoverage=true
-```
-
-### Ejecutar tests por concepto
-
-```bash
-# Tests de Clean Code - Naming
-cd src/CleanCode/naming
-dotnet new xunit -n NamingTests
-# Agregar Tests.cs al proyecto
-dotnet test
-
-# Tests de SOLID - SRP
-cd src/SOLID/srp
-dotnet new xunit -n SrpTests
-# Agregar Tests.cs al proyecto
-dotnet test
-
-# Tests de Patterns - Factory
+# 1. Crear proyecto de tests en la carpeta del concepto
 cd src/Patterns/factory
 dotnet new xunit -n FactoryTests
-# Agregar Tests.cs al proyecto
+
+# 2. Mover Tests.cs al nuevo proyecto
+mv Tests.cs FactoryTests/
+
+# 3. Copiar los archivos de implementación al proyecto
+cp factory-bad.cs FactoryTests/
+cp factory-good.cs FactoryTests/
+
+# 4. Ejecutar tests
+cd FactoryTests
 dotnet test
+```
+
+### Alternativa más simple: Ejecutar los ejemplos directamente
+
+En lugar de configurar proyectos de testing, puedes ejecutar los archivos de ejemplo directamente para ver su funcionamiento:
+
+```bash
+# Ejecutar ejemplo malo
+dotnet script src/Patterns/factory/factory-bad.cs
+
+# Ejecutar ejemplo bueno
+dotnet script src/Patterns/factory/factory-good.cs
+
+# Los ejemplos ya incluyen casos de uso que demuestran su comportamiento
 ```
 
 ## 🔍 Beneficios demostrados
@@ -246,7 +246,7 @@ dotnet test
 **Solución:** Verificar rutas en `.csproj` con `<Compile Include="../archivo.cs" />`
 
 **Problema:** Tests no se ejecutan
-**Solución:** Ejecutar `dotnet build` primero
+**Solución:** Los tests requieren crear un proyecto xUnit. Para desarrollo rápido, ejecuta los archivos de ejemplo directamente con `dotnet script`
 
 **Problema:** Namespace conflicts
 **Solución:** Usar namespaces únicos o `global using` en C# 10+
@@ -271,15 +271,8 @@ dotnet test
 ## 🛠️ Comandos Útiles
 
 ```bash
-# Compilar un archivo
-csc src/CleanCode/naming/naming-good.cs
-
-# Ejecutar
-./naming-good.exe  # Windows
-./naming-good      # Linux/Mac (con Mono)
-
-# Compilar con warnings
-csc /warn:4 src/CleanCode/naming/naming-good.cs
+# Ejecutar un archivo (FORMA RECOMENDADA)
+dotnet script src/CleanCode/naming/naming-good.cs
 
 # Crear proyecto de consola
 dotnet new console -n MiProyecto

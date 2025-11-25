@@ -1,35 +1,8 @@
 # Cumplimiento del OCP: Abierto para extensión, cerrado para modificación
-# Solución: Usar interfaces para que se puedan agregar nuevos animales sin cambiar el código existente
+# ✅ Solución: Usar interfaces para que se puedan agregar nuevos animales sin cambiar el código existente
 
 from abc import ABC, abstractmethod
 from typing import List
-
-
-# ✅ Estrategia de descuento usando OCP
-class DiscountStrategy(ABC):
-    @abstractmethod
-    def apply_discount(self, price: float) -> float:
-        pass
-
-
-class RegularDiscount(DiscountStrategy):
-    def apply_discount(self, price: float) -> float:
-        return price * 0.95  # 5% de descuento
-
-
-class VIPDiscount(DiscountStrategy):
-    def apply_discount(self, price: float) -> float:
-        return price * 0.80  # 20% de descuento
-
-
-class StudentDiscount(DiscountStrategy):
-    def apply_discount(self, price: float) -> float:
-        return price * 0.85  # 15% de descuento
-
-
-class DiscountCalculator:
-    def calculate_discount(self, discount_strategy: DiscountStrategy, price: float) -> float:
-        return discount_strategy.apply_discount(price)
 
 
 class Communicable(ABC):
@@ -73,8 +46,8 @@ class Duck(Communicable):
         return "quack quack"
 
 
+# Uso - ¡agregar Fox, Cow, Duck NO requirió cambios en las clases existentes!
 if __name__ == "__main__":
-    # Uso - ¡agregar Fox, Cow, Duck NO requirió cambios en las clases existentes!
     communication = Communication()
     dog = Dog()
     cat = Cat()

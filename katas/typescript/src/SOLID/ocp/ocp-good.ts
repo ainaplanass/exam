@@ -1,48 +1,48 @@
 // Cumplimiento del OCP: Abierto para extensión, cerrado para modificación
-// Solución: Usar interfaces para que se puedan agregar nuevos animales sin cambiar el código existente
+// ✅ Solución: Usar interfaces para que se puedan agregar nuevos animales sin cambiar el código existente
 
 interface Communicable {
   communicate(): string;
 }
 
 class Dog implements Communicable {
-  public communicate(): string {
+  communicate(): string {
     return "woof woof";
   }
 }
 
 class Cat implements Communicable {
-  public communicate(): string {
+  communicate(): string {
     return "meow meow";
   }
 }
 
 // ✅ Esta clase nunca necesita ser modificada al agregar nuevos animales
 class Communication {
-  public communicate(animal: Communicable): string {
+  communicate(animal: Communicable): string {
     return animal.communicate();
   }
 
-  public communicateMultiple(animals: Communicable[]): string[] {
+  communicateMultiple(animals: Communicable[]): string[] {
     return animals.map((animal) => animal.communicate());
   }
 }
 
 // ✅ Agregar nuevos animales sin modificar el código existente
 class Fox implements Communicable {
-  public communicate(): string {
+  communicate(): string {
     return "ring-ding-ding-ding-dingeringeding";
   }
 }
 
 class Cow implements Communicable {
-  public communicate(): string {
+  communicate(): string {
     return "moo moo";
   }
 }
 
 class Duck implements Communicable {
-  public communicate(): string {
+  communicate(): string {
     return "quack quack";
   }
 }
@@ -64,33 +64,4 @@ console.log(communication.communicate(duck)); // "quack quack"
 const allAnimals = [dog, cat, fox, cow, duck];
 console.log(communication.communicateMultiple(allAnimals));
 
-// DiscountCalculator for test compatibility
-interface DiscountStrategy {
-  calculate(amount: number): number;
-}
-
-class RegularCustomerDiscount implements DiscountStrategy {
-  public calculate(amount: number): number {
-    return amount * 0.05;
-  }
-}
-
-class VIPCustomerDiscount implements DiscountStrategy {
-  public calculate(amount: number): number {
-    return amount * 0.2;
-  }
-}
-
-class NewCustomerDiscount implements DiscountStrategy {
-  public calculate(amount: number): number {
-    return amount * 0.1;
-  }
-}
-
-class DiscountCalculator {
-  public calculateDiscount(amount: number, strategy: DiscountStrategy): number {
-    return strategy.calculate(amount);
-  }
-}
-
-export { Communicable, Dog, Cat, Fox, Cow, Duck, Communication, DiscountStrategy, RegularCustomerDiscount, VIPCustomerDiscount, NewCustomerDiscount, DiscountCalculator };
+export { Communicable, Dog, Cat, Fox, Cow, Duck, Communication };
