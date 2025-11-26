@@ -77,6 +77,8 @@ dotnet script --version # Debe mostrar versión instalada
 ```bash
 cd katas/csharp
 dotnet script src/CleanCode/naming/naming-bad.cs
+dotnet script src/SOLID/srp/srp-good.cs
+dotnet script src/Patterns/factory/factory-good.cs
 ```
 
 ## 🎯 Formato de aprendizaje (20 minutos por concepto)
@@ -90,7 +92,7 @@ Cada carpeta incluye:
 
 ### Cómo estudiar cada concepto
 
-1. Lee el README del concepto
+1. Lee el README del concepto en `src/`
 2. Ejecuta el ejemplo malo: `dotnet script src/.../ejemplo-bad.cs`
 3. Refactoriza en el archivo exercise
 4. Ejecuta tu solución: `dotnet script src/.../ejemplo-exercise.cs`
@@ -143,14 +145,8 @@ dotnet script src/Patterns/factory/factory-good.cs
 **Problema:** `dotnet: command not found`
 **Solución:** Instalar .NET SDK desde https://dotnet.microsoft.com/download
 
-**Problema:** `csc: command not found`
-**Solución:** Usar `dotnet` o agregar el compilador al PATH
-
-**Problema:** Referencias no encontradas en tests
-**Solución:** Verificar rutas en `.csproj` con `<Compile Include="../archivo.cs" />`
-
-**Problema:** Tests no se ejecutan
-**Solución:** Los tests requieren crear un proyecto xUnit. Para desarrollo rápido, ejecuta los archivos de ejemplo directamente con `dotnet script`
+**Problema:** `dotnet script: command not found`
+**Solución:** Ejecutar `dotnet tool install -g dotnet-script`
 
 **Problema:** Namespace conflicts
 **Solución:** Usar namespaces únicos o `global using` en C# 10+
@@ -175,14 +171,8 @@ dotnet script src/Patterns/factory/factory-good.cs
 ## 🛠️ Comandos Útiles
 
 ```bash
-# Ejecutar un archivo (FORMA RECOMENDADA)
+# Ejecutar un archivo individual con dotnet script
 dotnet script src/CleanCode/naming/naming-good.cs
-
-# Crear proyecto de consola
-dotnet new console -n MiProyecto
-
-# Ejecutar tests con filtro
-dotnet test --filter "FullyQualifiedName~UserServiceBad"
 
 # Limpiar builds
 dotnet clean

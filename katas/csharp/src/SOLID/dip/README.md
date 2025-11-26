@@ -57,8 +57,8 @@ Pregúntate:
 ## 🚀 Cómo ejecutar
 
 ```bash
-# Compilar y ejecutar
-csc dip-bad.cs && dip-bad.exe
-csc dip-good.cs && dip-good.exe
+# Ejecutar ejemplos
+dotnet script dip-bad.cs
+dotnet script dip-good.cs
 ```
 ````

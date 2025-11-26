@@ -62,14 +62,8 @@ public class NotificationService
 // 2. Lógica de creación de objetos duplicada en toda la aplicación
 // 3. Difícil de probar - el cliente conoce todas las clases concretas
 
-class Program
-{
-  static void Main()
-  {
-    Console.WriteLine("=== Violación del Patrón Factory ===");
-    var service = new NotificationService();
-    Console.WriteLine(service.SendNotification("email", "Hola Mundo"));
-    Console.WriteLine(service.SendNotification("sms", "Hola Mundo"));
-    Console.WriteLine(service.SendNotification("push", "Hola Mundo"));
-  }
-}
+Console.WriteLine("=== Violación del Patrón Factory ===");
+var service = new NotificationService();
+Console.WriteLine(service.SendNotification("email", "Hola Mundo"));
+Console.WriteLine(service.SendNotification("sms", "Hola Mundo"));
+Console.WriteLine(service.SendNotification("push", "Hola Mundo"));

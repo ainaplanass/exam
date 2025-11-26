@@ -54,8 +54,8 @@ Pregúntate:
 ## 🚀 Cómo ejecutar
 
 ```bash
-# Compilar y ejecutar
-csc isp-bad.cs && isp-bad.exe
-csc isp-good.cs && isp-good.exe
+# Ejecutar ejemplos
+dotnet script isp-bad.cs
+dotnet script isp-good.cs
 ```
 ````

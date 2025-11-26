@@ -62,8 +62,8 @@ Pregúntate:
 ## 🚀 Cómo ejecutar
 
 ```bash
-# Compilar y ejecutar
-csc lsp-bad.cs && lsp-bad.exe
-csc lsp-good.cs && lsp-good.exe
+# Ejecutar ejemplos
+dotnet script lsp-bad.cs
+dotnet script lsp-good.cs
 ```
 ````

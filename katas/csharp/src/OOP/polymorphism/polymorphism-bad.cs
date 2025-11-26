@@ -78,33 +78,27 @@ public class AnimalProcessor
 }
 
 // ❌ Uso con condicionales por todos lados
-class Program
+Console.WriteLine("=== Violación de Polimorfismo ===");
+
+var processor = new AnimalProcessor();
+
+var dog = new DogData { Name = "Rex" };
+var cat = new CatData { Name = "Luna" };
+var bird = new BirdData { Name = "Piolín" };
+
+var animals = new object[] { dog, cat, bird };
+
+// ❌ El procesador debe verificar el tipo constantemente
+foreach (var animal in animals)
 {
-  static void Main()
-  {
-    Console.WriteLine("=== Violación de Polimorfismo ===");
-
-    var processor = new AnimalProcessor();
-
-    var dog = new DogData { Name = "Rex" };
-    var cat = new CatData { Name = "Luna" };
-    var bird = new BirdData { Name = "Piolín" };
-
-    var animals = new object[] { dog, cat, bird };
-
-    // ❌ El procesador debe verificar el tipo constantemente
-    foreach (var animal in animals)
-    {
-      processor.MakeSound(animal);
-      processor.Feed(animal);
-      processor.Move(animal);
-    }
-
-    // ❌ Problemas:
-    // - Muchos if/else repetidos
-    // - Agregar nuevo animal requiere modificar MUCHOS métodos
-    // - Propenso a errores (olvidar un caso)
-    // - Viola Open/Closed Principle
-    // - Difícil de mantener y escalar
-  }
+  processor.MakeSound(animal);
+  processor.Feed(animal);
+  processor.Move(animal);
 }
+
+// ❌ Problemas:
+// - Muchos if/else repetidos
+// - Agregar nuevo animal requiere modificar MUCHOS métodos
+// - Propenso a errores (olvidar un caso)
+// - Viola Open/Closed Principle
+// - Difícil de mantener y escalar

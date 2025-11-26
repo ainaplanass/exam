@@ -53,22 +53,16 @@ public class Communication
 }
 
 // Uso
-class Program
-{
-  static void Main()
-  {
-    var communication = new Communication();
-    var dog = new Dog();
-    var cat = new Cat();
-    var fox = new Fox();
+var communication = new Communication();
+var dog = new Dog();
+var cat = new Cat();
+var fox = new Fox();
 
-    Console.WriteLine(communication.Communicate(dog)); // "woof woof"
-    Console.WriteLine(communication.Communicate(cat)); // "meow meow"
-    Console.WriteLine(communication.Communicate(fox)); // "ring-ding-ding-ding-dingeringeding"
+Console.WriteLine(communication.Communicate(dog)); // "woof woof"
+Console.WriteLine(communication.Communicate(cat)); // "meow meow"
+Console.WriteLine(communication.Communicate(fox)); // "ring-ding-ding-ding-dingeringeding"
 
-    // ❌ Problema: Para agregar Cow, debemos:
-    // 1. Crear la clase Cow
-    // 2. Modificar el tipo de parámetro en Communicate() ❌
-    // 3. Agregar una nueva rama if/else ❌
-  }
-}
+// ❌ Problema: Para agregar Cow, debemos:
+// 1. Crear la clase Cow
+// 2. Modificar el tipo de parámetro en Communicate() ❌
+// 3. Agregar una nueva rama if/else ❌

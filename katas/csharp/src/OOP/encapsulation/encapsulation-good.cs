@@ -115,30 +115,24 @@ public class BankAccount
 }
 
 // ✅ Con encapsulamiento, todas las reglas son respetadas
-class Program
-{
-  static void Main()
-  {
-    Console.WriteLine("=== Cumplimiento de Encapsulamiento ===");
+Console.WriteLine("=== Cumplimiento de Encapsulamiento ===");
 
-    var account = new BankAccount("001", 1000);
-    Console.WriteLine($"Balance inicial: ${account.GetBalance()}");
+var account = new BankAccount("001", 1000);
+Console.WriteLine($"Balance inicial: ${account.GetBalance()}");
 
-    // ✅ No se puede modificar directamente - solo mediante métodos
-    // account.balance = -5000; // ❌ Error: 'balance' es privado
+// ✅ No se puede modificar directamente - solo mediante métodos
+// account.balance = -5000; // ❌ Error: 'balance' es privado
 
-    // ✅ Intento de retiro excesivo es rechazado
-    account.Withdraw(2000); // "Error: Fondos insuficientes"
+// ✅ Intento de retiro excesivo es rechazado
+account.Withdraw(2000); // "Error: Fondos insuficientes"
 
-    // ✅ Depósito con validación
-    account.Deposit(500); // Funciona correctamente
+// ✅ Depósito con validación
+account.Deposit(500); // Funciona correctamente
 
-    // ✅ Retiro válido
-    account.Withdraw(300); // Funciona correctamente
+// ✅ Retiro válido
+account.Withdraw(300); // Funciona correctamente
 
-    Console.WriteLine($"Balance final: ${account.GetBalance()}");
+Console.WriteLine($"Balance final: ${account.GetBalance()}");
 
-    // ✅ No se puede cerrar cuenta con fondos
-    account.CloseAccount(); // "Error: Debe retirar todos los fondos..."
-  }
-}
+// ✅ No se puede cerrar cuenta con fondos
+account.CloseAccount(); // "Error: Debe retirar todos los fondos..."

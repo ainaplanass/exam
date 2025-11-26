@@ -60,11 +60,7 @@ Pregúntate:
 ## 🚀 Cómo ejecutar
 
 ```bash
-# Compilar y ejecutar
-csc abstraction-bad.cs && abstraction-bad.exe
-csc abstraction-good.cs && abstraction-good.exe
-
-# O usando dotnet script
+# Ejecutar ejemplos
 dotnet script abstraction-bad.cs
 dotnet script abstraction-good.cs
 ```

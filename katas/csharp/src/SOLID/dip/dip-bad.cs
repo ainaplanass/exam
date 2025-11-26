@@ -36,12 +36,6 @@ public class OrderService
 // 2. Difícil de probar (no se puede hacer mock de la base de datos fácilmente)
 // 3. OrderService sabe demasiado sobre los detalles de la base de datos
 
-class Program
-{
-  static void Main()
-  {
-    var database = new MySQLDatabase();
-    var orderService = new OrderService(database);
-    orderService.ProcessOrder("12345");
-  }
-}
+var database = new MySQLDatabase();
+var orderService = new OrderService(database);
+orderService.ProcessOrder("12345");

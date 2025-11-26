@@ -60,8 +60,8 @@ Pregúntate:
 ## 🚀 Cómo ejecutar
 
 ```bash
-# Compilar y ejecutar
-csc encapsulation-bad.cs && encapsulation-bad.exe
-csc encapsulation-good.cs && encapsulation-good.exe
+# Ejecutar ejemplos
+dotnet script encapsulation-bad.cs
+dotnet script encapsulation-good.cs
 ```
 ````

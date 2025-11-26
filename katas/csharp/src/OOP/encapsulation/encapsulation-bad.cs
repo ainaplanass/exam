@@ -36,34 +36,28 @@ public class BankAccount
 }
 
 // ❌ Sin encapsulamiento, cualquiera puede romper las reglas
-class Program
-{
-  static void Main()
-  {
-    Console.WriteLine("=== Violación de Encapsulamiento ===");
+Console.WriteLine("=== Violación de Encapsulamiento ===");
 
-    var account = new BankAccount("001", 1000);
-    Console.WriteLine($"Balance inicial: ${account.Balance}");
+var account = new BankAccount("001", 1000);
+Console.WriteLine($"Balance inicial: ${account.Balance}");
 
-    // ❌ Modificación directa sin validación
-    account.Balance = -5000; // ¡Balance negativo!
-    Console.WriteLine($"Balance después de modificación directa: ${account.Balance}");
+// ❌ Modificación directa sin validación
+account.Balance = -5000; // ¡Balance negativo!
+Console.WriteLine($"Balance después de modificación directa: ${account.Balance}");
 
-    // ❌ Cambiar número de cuenta directamente
-    account.AccountNumber = "999"; // ¡No debería ser posible!
-    Console.WriteLine($"Número de cuenta modificado: {account.AccountNumber}");
+// ❌ Cambiar número de cuenta directamente
+account.AccountNumber = "999"; // ¡No debería ser posible!
+Console.WriteLine($"Número de cuenta modificado: {account.AccountNumber}");
 
-    // ❌ Desactivar cuenta sin proceso adecuado
-    account.IsActive = false; // Bypass de reglas de negocio
-    Console.WriteLine($"Cuenta activa: {account.IsActive}");
+// ❌ Desactivar cuenta sin proceso adecuado
+account.IsActive = false; // Bypass de reglas de negocio
+Console.WriteLine($"Cuenta activa: {account.IsActive}");
 
-    // ❌ Modificar historial directamente
-    account.TransactionHistory = new List<string>(); // ¡Borrar evidencia!
-    Console.WriteLine($"Historial manipulado: {account.TransactionHistory.Count} transacciones");
+// ❌ Modificar historial directamente
+account.TransactionHistory = new List<string>(); // ¡Borrar evidencia!
+Console.WriteLine($"Historial manipulado: {account.TransactionHistory.Count} transacciones");
 
-    // ❌ Retiro sin validación de fondos suficientes
-    account.Balance = 100;
-    account.Withdraw(1000); // ¡Retiro mayor al balance!
-    Console.WriteLine($"Balance después de retiro excesivo: ${account.Balance}");
-  }
-}
+// ❌ Retiro sin validación de fondos suficientes
+account.Balance = 100;
+account.Withdraw(1000); // ¡Retiro mayor al balance!
+Console.WriteLine($"Balance después de retiro excesivo: ${account.Balance}");

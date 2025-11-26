@@ -49,13 +49,7 @@ public class MediaApp
 // 2. Cada reproductor tiene su propia interfaz (PlayMP3, PlayWAV, etc.)
 // 3. Agregar nuevos formatos requiere modificar MediaApp
 
-class Program
-{
-  static void Main()
-  {
-    Console.WriteLine("=== Violación del Patrón Adapter ===");
-    var app = new MediaApp();
-    app.Play("mp3", "cancion.mp3");
-    app.Play("wav", "cancion.wav");
-  }
-}
+Console.WriteLine("=== Violación del Patrón Adapter ===");
+var app = new MediaApp();
+app.Play("mp3", "cancion.mp3");
+app.Play("wav", "cancion.wav");

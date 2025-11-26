@@ -87,30 +87,24 @@ public class PizzaBuilder
 // 2. Construcción paso a paso con métodos claros
 // 3. Fácil agregar nuevos ingredientes sin cambiar la interfaz existente
 
-class Program
-{
-  static void Main()
-  {
-    Console.WriteLine("=== Solución con Patrón Builder ===");
+Console.WriteLine("=== Solución con Patrón Builder ===");
 
-    // ✅ Mucho más claro - se entiende exactamente qué incluye la pizza
-    var pizza1 = new PizzaBuilder()
-        .WithSize("grande")
-        .WithCheese()
-        .WithPepperoni()
-        .WithOlives()
-        .WithThinCrust()
-        .Build();
-    Console.WriteLine(pizza1.GetDescription());
+// ✅ Mucho más claro - se entiende exactamente qué incluye la pizza
+var pizza1 = new PizzaBuilder()
+    .WithSize("grande")
+    .WithCheese()
+    .WithPepperoni()
+    .WithOlives()
+    .WithThinCrust()
+    .Build();
+Console.WriteLine(pizza1.GetDescription());
 
-    // ✅ Y este código también es muy legible
-    var pizza2 = new PizzaBuilder()
-        .WithSize("mediana")
-        .WithPepperoni()
-        .WithMushrooms()
-        .WithOlives()
-        .WithExtraCheese()
-        .Build();
-    Console.WriteLine(pizza2.GetDescription());
-  }
-}
+// ✅ Y este código también es muy legible
+var pizza2 = new PizzaBuilder()
+    .WithSize("mediana")
+    .WithPepperoni()
+    .WithMushrooms()
+    .WithOlives()
+    .WithExtraCheese()
+    .Build();
+Console.WriteLine(pizza2.GetDescription());

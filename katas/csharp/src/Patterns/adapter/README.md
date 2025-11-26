@@ -60,8 +60,8 @@ Pregúntate:
 ## 🚀 Cómo ejecutar
 
 ```bash
-# Compilar y ejecutar
-csc adapter-bad.cs && adapter-bad.exe
-csc adapter-good.cs && adapter-good.exe
+# Ejecutar ejemplos
+dotnet script adapter-bad.cs
+dotnet script adapter-good.cs
 ```
 ````

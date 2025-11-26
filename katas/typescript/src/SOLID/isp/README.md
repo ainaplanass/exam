@@ -14,18 +14,30 @@
 ### ¿Qué está mal aquí? 🚫
 
 ```typescript
-// Interfaz ancha - fuerza a TODOS los trabajadores a implementar TODOS los métodos
-interface Worker {
-  work(): string;
-  eat(): string; // ❌ ¡Los robots no comen!
-  sleep(): string; // ❌ ¡Los robots no duermen!
+// Interfaz ancha - fuerza a TODOS los dispositivos a implementar TODOS los métodos
+interface Device {
+  print(document: string): string;
+  scan(): string;
+}
+
+// ❌ Impresora simple forzada a implementar scan()
+class Printer implements Device {
+  public print(document: string): string {
+    return `Imprimiendo documento: ${document}`;
+  }
+
+  // ❌ Forzada a implementar scan() lanzando error
+  public scan(): string {
+    throw new Error("¡Esta impresora no puede escanear!");
+  }
 }
 ```
 
 **Problemas:**
 
-- La clase `Robot` se ve forzada a implementar `eat()` y `sleep()`
-- Debe escribir métodos sin sentido o lanzar errores
+- La clase `Printer` se ve forzada a implementar `scan()` aunque no escanea
+- La clase `Scanner` se ve forzada a implementar `print()` aunque no imprime
+- Deben lanzar errores en métodos que no tienen sentido
 - Viola el principio de interfaces limpias y enfocadas
 
 ## 🔧 Tu tarea
@@ -36,10 +48,41 @@ interface Worker {
 
 ## 🎯 Puntos clave
 
-- No fuerces implementaciones innecesarias
-- Divide interfaces grandes en específicas
+- No fuerces implementaciones innecesarias (métodos que lanzan errores)
+- Divide interfaces grandes en específicas (`Printable`, `Scannable`)
 - Cada clase implementa solo lo que necesita
+- Los dispositivos multifunción pueden implementar múltiples interfaces
 - Mejora limpieza y seguridad del código
+
+## 💡 Solución propuesta
+
+```typescript
+// ✅ Interfaces segregadas (separadas)
+interface Printable {
+  print(document: string): string;
+}
+
+interface Scannable {
+  scan(): string;
+}
+
+// ✅ Cada clase implementa solo lo que necesita
+class SimplePrinter implements Printable {
+  public print(document: string): string {
+    return `Imprimiendo documento: ${document}`;
+  }
+}
+
+class AdvancedPrinter implements Printable, Scannable {
+  public print(document: string): string {
+    return `Imprimiendo documento: ${document}`;
+  }
+
+  public scan(): string {
+    return "Escaneando documento...";
+  }
+}
+```
 
 ## ⏱️ Verificación rápida
 

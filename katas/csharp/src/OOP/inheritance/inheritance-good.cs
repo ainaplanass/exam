@@ -101,43 +101,37 @@ public class Bird : Animal
 }
 
 // ✅ Código reutilizado y fácil de mantener
-class Program
+Console.WriteLine("=== Cumplimiento de Herencia ===");
+
+var dog = new Dog("Rex", 5, 25);
+var cat = new Cat("Luna", 3, 4);
+var bird = new Bird("Piolín", 1, 0.5);
+
+// ✅ Métodos heredados funcionan igual
+Console.WriteLine(dog.GetInfo());
+dog.Eat();
+dog.MakeSound();
+dog.Fetch();
+
+Console.WriteLine(cat.GetInfo());
+cat.Eat();
+cat.MakeSound();
+cat.Purr();
+
+Console.WriteLine(bird.GetInfo());
+bird.Eat();
+bird.MakeSound();
+bird.Fly();
+
+// ✅ Si necesito cambiar Eat() o Sleep(), cambio una sola vez en Animal
+// ✅ Nuevos animales heredan automáticamente el comportamiento común
+// ✅ Consistencia garantizada
+
+// ✅ Bonus: Puedo trabajar con tipo Animal
+var animals = new List<Animal> { dog, cat, bird };
+Console.WriteLine("\n=== Todos los animales ===");
+foreach (var animal in animals)
 {
-  static void Main()
-  {
-    Console.WriteLine("=== Cumplimiento de Herencia ===");
-
-    var dog = new Dog("Rex", 5, 25);
-    var cat = new Cat("Luna", 3, 4);
-    var bird = new Bird("Piolín", 1, 0.5);
-
-    // ✅ Métodos heredados funcionan igual
-    Console.WriteLine(dog.GetInfo());
-    dog.Eat();
-    dog.MakeSound();
-    dog.Fetch();
-
-    Console.WriteLine(cat.GetInfo());
-    cat.Eat();
-    cat.MakeSound();
-    cat.Purr();
-
-    Console.WriteLine(bird.GetInfo());
-    bird.Eat();
-    bird.MakeSound();
-    bird.Fly();
-
-    // ✅ Si necesito cambiar Eat() o Sleep(), cambio una sola vez en Animal
-    // ✅ Nuevos animales heredan automáticamente el comportamiento común
-    // ✅ Consistencia garantizada
-
-    // ✅ Bonus: Puedo trabajar con tipo Animal
-    var animals = new List<Animal> { dog, cat, bird };
-    Console.WriteLine("\n=== Todos los animales ===");
-    foreach (var animal in animals)
-    {
-      animal.Eat(); // ✅ Funciona para todos
-      animal.MakeSound(); // ✅ Cada uno con su sonido específico
-    }
-  }
+  animal.Eat(); // ✅ Funciona para todos
+  animal.MakeSound(); // ✅ Cada uno con su sonido específico
 }

@@ -49,24 +49,18 @@ public class BirdOperations
 }
 
 // Probando la violación
-class Program
+Console.WriteLine("=== Demostración de Violación LSP ===");
+
+var eagle = new Eagle();
+var penguin = new Penguin();
+
+Console.WriteLine("Águila: " + BirdOperations.MakeBirdFly(eagle)); // ✅ Funciona bien
+
+try
 {
-  static void Main()
-  {
-    Console.WriteLine("=== Demostración de Violación LSP ===");
-
-    var eagle = new Eagle();
-    var penguin = new Penguin();
-
-    Console.WriteLine("Águila: " + BirdOperations.MakeBirdFly(eagle)); // ✅ Funciona bien
-
-    try
-    {
-      Console.WriteLine("Pingüino: " + BirdOperations.MakeBirdFly(penguin)); // ❌ ¡SE ROMPE!
-    }
-    catch (Exception error)
-    {
-      Console.WriteLine("ERROR: " + error.Message);
-    }
-  }
+  Console.WriteLine("Pingüino: " + BirdOperations.MakeBirdFly(penguin)); // ❌ ¡SE ROMPE!
+}
+catch (Exception error)
+{
+  Console.WriteLine("ERROR: " + error.Message);
 }

@@ -74,8 +74,8 @@ Pregúntate:
 ## 🚀 Cómo ejecutar
 
 ```bash
-# Compilar y ejecutar
-csc polymorphism-bad.cs && polymorphism-bad.exe
-csc polymorphism-good.cs && polymorphism-good.exe
+# Ejecutar ejemplos
+dotnet script polymorphism-bad.cs
+dotnet script polymorphism-good.cs
 ```
 ````

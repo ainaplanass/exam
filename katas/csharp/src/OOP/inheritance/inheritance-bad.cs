@@ -118,30 +118,24 @@ public class Bird
 }
 
 // ❌ Mucho código duplicado y difícil de mantener
-class Program
-{
-  static void Main()
-  {
-    Console.WriteLine("=== Violación de Herencia ===");
+Console.WriteLine("=== Violación de Herencia ===");
 
-    var dog = new Dog("Rex", 5, 25);
-    var cat = new Cat("Luna", 3, 4);
-    var bird = new Bird("Piolín", 1, 0.5);
+var dog = new Dog("Rex", 5, 25);
+var cat = new Cat("Luna", 3, 4);
+var bird = new Bird("Piolín", 1, 0.5);
 
-    Console.WriteLine(dog.GetInfo());
-    dog.Eat();
-    dog.Bark();
+Console.WriteLine(dog.GetInfo());
+dog.Eat();
+dog.Bark();
 
-    Console.WriteLine(cat.GetInfo());
-    cat.Eat();
-    cat.Meow();
+Console.WriteLine(cat.GetInfo());
+cat.Eat();
+cat.Meow();
 
-    Console.WriteLine(bird.GetInfo());
-    bird.Eat();
-    bird.Chirp();
+Console.WriteLine(bird.GetInfo());
+bird.Eat();
+bird.Chirp();
 
-    // ❌ Si necesito cambiar Eat() o Sleep(), debo modificar 3 clases
-    // ❌ Si agrego más animales, más duplicación
-    // ❌ Propenso a inconsistencias
-  }
-}
+// ❌ Si necesito cambiar Eat() o Sleep(), debo modificar 3 clases
+// ❌ Si agrego más animales, más duplicación
+// ❌ Propenso a inconsistencias

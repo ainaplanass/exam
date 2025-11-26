@@ -64,8 +64,8 @@ Pregúntate:
 ## 🚀 Cómo ejecutar
 
 ```bash
-# Compilar y ejecutar
-csc factory-bad.cs && factory-bad.exe
-csc factory-good.cs && factory-good.exe
+# Ejecutar ejemplos
+dotnet script factory-bad.cs
+dotnet script factory-good.cs
 ```
 ````

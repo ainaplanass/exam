@@ -41,17 +41,11 @@ public class SimpleScanner : IDevice
 }
 
 // Uso mostrando el problema
-class Program
-{
-  static void Main()
-  {
-    var simplePrinter = new SimplePrinter();
-    var simpleScanner = new SimpleScanner();
+var simplePrinter = new SimplePrinter();
+var simpleScanner = new SimpleScanner();
 
-    Console.WriteLine(simplePrinter.Print("documento.pdf")); // ✅ Funciona
-                                                             // Console.WriteLine(simplePrinter.Scan()); // ❌ ¡Lanza error!
+Console.WriteLine(simplePrinter.Print("documento.pdf")); // ✅ Funciona
+                                                         // Console.WriteLine(simplePrinter.Scan()); // ❌ ¡Lanza error!
 
-    // Console.WriteLine(simpleScanner.Print("documento.pdf")); // ❌ ¡Lanza error!
-    Console.WriteLine(simpleScanner.Scan()); // ✅ Funciona
-  }
-}
+// Console.WriteLine(simpleScanner.Print("documento.pdf")); // ❌ ¡Lanza error!
+Console.WriteLine(simpleScanner.Scan()); // ✅ Funciona

@@ -55,8 +55,8 @@ Pregúntate:
 ## 🚀 Cómo ejecutar
 
 ```bash
-# Compilar y ejecutar
-csc builder-bad.cs && builder-bad.exe
-csc builder-good.cs && builder-good.exe
+# Ejecutar con dotnet script
+dotnet script builder-bad.cs
+dotnet script builder-good.cs
 ```
 ````

@@ -70,25 +70,19 @@ public class Duck : ICommunicable
 }
 
 // Uso - ¡agregar Fox, Cow, Duck NO requirió cambios en las clases existentes!
-class Program
-{
-  static void Main()
-  {
-    var communication = new Communication();
-    var dog = new Dog();
-    var cat = new Cat();
-    var fox = new Fox();
-    var cow = new Cow();
-    var duck = new Duck();
+var communication = new Communication();
+var dog = new Dog();
+var cat = new Cat();
+var fox = new Fox();
+var cow = new Cow();
+var duck = new Duck();
 
-    Console.WriteLine(communication.Communicate(dog)); // "woof woof"
-    Console.WriteLine(communication.Communicate(cat)); // "meow meow"
-    Console.WriteLine(communication.Communicate(fox)); // "ring-ding-ding-ding-dingeringeding"
-    Console.WriteLine(communication.Communicate(cow)); // "moo moo"
-    Console.WriteLine(communication.Communicate(duck)); // "quack quack"
+Console.WriteLine(communication.Communicate(dog)); // "woof woof"
+Console.WriteLine(communication.Communicate(cat)); // "meow meow"
+Console.WriteLine(communication.Communicate(fox)); // "ring-ding-ding-ding-dingeringeding"
+Console.WriteLine(communication.Communicate(cow)); // "moo moo"
+Console.WriteLine(communication.Communicate(duck)); // "quack quack"
 
-    var allAnimals = new List<ICommunicable> { dog, cat, fox, cow, duck };
-    var results = communication.CommunicateMultiple(allAnimals);
-    Console.WriteLine(string.Join(", ", results));
-  }
-}
+var allAnimals = new List<ICommunicable> { dog, cat, fox, cow, duck };
+var results = communication.CommunicateMultiple(allAnimals);
+Console.WriteLine(string.Join(", ", results));

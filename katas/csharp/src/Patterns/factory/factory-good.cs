@@ -69,21 +69,15 @@ public class NotificationService
 // 2. Fácil agregar nuevos tipos de notificación (solo actualizar la fábrica)
 // 3. El código cliente depende de la interfaz, no de clases concretas
 
-class Program
-{
-  static void Main()
-  {
-    Console.WriteLine("=== Solución con Patrón Factory ===");
-    var service = new NotificationService();
-    Console.WriteLine(service.SendNotification("email", "Hola Mundo"));
-    Console.WriteLine(service.SendNotification("sms", "Hola Mundo"));
-    Console.WriteLine(service.SendNotification("push", "Hola Mundo"));
+Console.WriteLine("=== Solución con Patrón Factory ===");
+var service = new NotificationService();
+Console.WriteLine(service.SendNotification("email", "Hola Mundo"));
+Console.WriteLine(service.SendNotification("sms", "Hola Mundo"));
+Console.WriteLine(service.SendNotification("push", "Hola Mundo"));
 
-    // ¡Agregar un nuevo tipo es fácil - solo cambiar la fábrica!
-    Console.WriteLine("\n=== Nuevo tipo agregado ===");
-    // Para agregar SlackNotification, solo crear la clase e incluir en la factory
-  }
-}
+// ¡Agregar un nuevo tipo es fácil - solo cambiar la fábrica!
+Console.WriteLine("\n=== Nuevo tipo agregado ===");
+// Para agregar SlackNotification, solo crear la clase e incluir en la factory
 
 // ✅ Agregar un nuevo tipo (ejemplo):
 public class SlackNotification : INotification

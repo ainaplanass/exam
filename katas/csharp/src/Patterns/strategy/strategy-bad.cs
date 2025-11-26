@@ -41,15 +41,9 @@ public class ShoppingCart
 // 2. Los algoritmos de descuento no se pueden reutilizar
 // 3. Difícil de probar cada estrategia por separado
 
-class Program
-{
-  static void Main()
-  {
-    Console.WriteLine("=== Violación del Patrón Strategy ===");
-    var cart = new ShoppingCart();
-    Console.WriteLine($"Regular: ${cart.CalculateTotal(100, "regular")}");
-    Console.WriteLine($"Premium: ${cart.CalculateTotal(100, "premium")}");
-    Console.WriteLine($"VIP: ${cart.CalculateTotal(100, "vip")}");
-    Console.WriteLine($"Employee: ${cart.CalculateTotal(100, "employee")}");
-  }
-}
+Console.WriteLine("=== Violación del Patrón Strategy ===");
+var cart = new ShoppingCart();
+Console.WriteLine($"Regular: ${cart.CalculateTotal(100, "regular")}");
+Console.WriteLine($"Premium: ${cart.CalculateTotal(100, "premium")}");
+Console.WriteLine($"VIP: ${cart.CalculateTotal(100, "vip")}");
+Console.WriteLine($"Employee: ${cart.CalculateTotal(100, "employee")}");

@@ -92,9 +92,9 @@ Pregúntate:
 ## 🚀 Cómo ejecutar
 
 ```bash
-# Compilar y ejecutar el ejemplo malo
-csc srp-bad.cs && ./srp-bad.exe
+# Ejecutar el ejemplo malo
+dotnet script srp-bad.cs
 
-# Compilar y ejecutar el ejemplo bueno
-csc srp-good.cs && ./srp-good.exe
+# Ejecutar el ejemplo bueno
+dotnet script srp-good.cs
 ```

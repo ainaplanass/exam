@@ -110,39 +110,33 @@ public class AnimalProcessor
 }
 
 // ✅ Uso limpio sin condicionales
-class Program
-{
-  static void Main()
-  {
-    Console.WriteLine("=== Cumplimiento de Polimorfismo ===");
+Console.WriteLine("=== Cumplimiento de Polimorfismo ===");
 
-    var dog = new Dog("Rex");
-    var cat = new Cat("Luna");
-    var bird = new Bird("Piolín");
+var dog = new Dog("Rex");
+var cat = new Cat("Luna");
+var bird = new Bird("Piolín");
 
-    // ✅ Array de tipo Animal - polimorfismo en acción
-    var animals = new List<Animal> { dog, cat, bird };
+// ✅ Array de tipo Animal - polimorfismo en acción
+var animals = new List<Animal> { dog, cat, bird };
 
-    var processor = new AnimalProcessor();
+var processor = new AnimalProcessor();
 
-    // ✅ Un solo método procesa todos los tipos sin verificar
-    processor.ProcessAnimals(animals);
+// ✅ Un solo método procesa todos los tipos sin verificar
+processor.ProcessAnimals(animals);
 
-    // ✅ Agregar nuevo animal es fácil - solo crear la clase
-    var fish = new Fish("Nemo");
-    Console.WriteLine("\n=== Nuevo animal agregado sin modificar código existente ===");
+// ✅ Agregar nuevo animal es fácil - solo crear la clase
+var fish = new Fish("Nemo");
+Console.WriteLine("\n=== Nuevo animal agregado sin modificar código existente ===");
 
-    // ✅ Funciona inmediatamente sin cambiar AnimalProcessor
-    processor.ProcessAnimals(new List<Animal> { fish });
+// ✅ Funciona inmediatamente sin cambiar AnimalProcessor
+processor.ProcessAnimals(new List<Animal> { fish });
 
-    // ✅ Beneficios:
-    // - Sin if/else ni switch
-    // - Agregar nuevos animales no modifica código existente
-    // - Cada clase tiene su lógica encapsulada
-    // - Respeta Open/Closed Principle
-    // - Fácil de mantener y escalar
-  }
-}
+// ✅ Beneficios:
+// - Sin if/else ni switch
+// - Agregar nuevos animales no modifica código existente
+// - Cada clase tiene su lógica encapsulada
+// - Respeta Open/Closed Principle
+// - Fácil de mantener y escalar
 
 public class Fish : Animal
 {

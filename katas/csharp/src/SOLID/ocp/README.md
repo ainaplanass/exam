@@ -109,8 +109,8 @@ Pregúntate:
 ## 🚀 Cómo ejecutar
 
 ```bash
-# Compilar y ejecutar
-csc ocp-bad.cs && ocp-bad.exe
-csc ocp-good.cs && ocp-good.exe
+# Ejecutar ejemplos
+dotnet script ocp-bad.cs
+dotnet script ocp-good.cs
 ```
 ````

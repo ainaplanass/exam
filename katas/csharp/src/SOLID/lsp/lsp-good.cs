@@ -104,29 +104,23 @@ public class AnimalOperations
 }
 
 // Probando - ¡sin fallos! ✅
-class Program
-{
-  static void Main()
-  {
-    Console.WriteLine("=== Pruebas de Animales con LSP ===");
+Console.WriteLine("=== Pruebas de Animales con LSP ===");
 
-    var eagle = new Eagle();
-    var penguin = new Penguin();
-    var duck = new Duck();
+var eagle = new Eagle();
+var penguin = new Penguin();
+var duck = new Duck();
 
-    // Todos los animales pueden ser tratados de la misma manera ✅
-    Console.WriteLine("Alimentando: " + AnimalOperations.FeedAnimal(eagle));
-    Console.WriteLine("Alimentando: " + AnimalOperations.FeedAnimal(penguin));
-    Console.WriteLine("Alimentando: " + AnimalOperations.FeedAnimal(duck));
+// Todos los animales pueden ser tratados de la misma manera ✅
+Console.WriteLine("Alimentando: " + AnimalOperations.FeedAnimal(eagle));
+Console.WriteLine("Alimentando: " + AnimalOperations.FeedAnimal(penguin));
+Console.WriteLine("Alimentando: " + AnimalOperations.FeedAnimal(duck));
 
-    // Solo a las criaturas voladoras se les pide volar ✅
-    Console.WriteLine("Volando: " + AnimalOperations.MakeFlyableCreatureFly(eagle));
-    Console.WriteLine("Volando: " + AnimalOperations.MakeFlyableCreatureFly(duck));
-    // ¡penguin no se le pide volar - seguro en tiempo de compilación!
+// Solo a las criaturas voladoras se les pide volar ✅
+Console.WriteLine("Volando: " + AnimalOperations.MakeFlyableCreatureFly(eagle));
+Console.WriteLine("Volando: " + AnimalOperations.MakeFlyableCreatureFly(duck));
+// ¡penguin no se le pide volar - seguro en tiempo de compilación!
 
-    // Solo a las criaturas nadadoras se les pide nadar ✅
-    Console.WriteLine("Nadando: " + AnimalOperations.MakeSwimmableCreatureSwim(penguin));
-    Console.WriteLine("Nadando: " + AnimalOperations.MakeSwimmableCreatureSwim(duck));
-    // ¡eagle no se le pide nadar - seguro en tiempo de compilación!
-  }
-}
+// Solo a las criaturas nadadoras se les pide nadar ✅
+Console.WriteLine("Nadando: " + AnimalOperations.MakeSwimmableCreatureSwim(penguin));
+Console.WriteLine("Nadando: " + AnimalOperations.MakeSwimmableCreatureSwim(duck));
+// ¡eagle no se le pide nadar - seguro en tiempo de compilación!

@@ -59,8 +59,8 @@ Pregúntate:
 ## 🚀 Cómo ejecutar
 
 ```bash
-# Compilar y ejecutar
-csc strategy-bad.cs && strategy-bad.exe
-csc strategy-good.cs && strategy-good.exe
+# Ejecutar ejemplos
+dotnet script strategy-bad.cs
+dotnet script strategy-good.cs
 ```
 ````

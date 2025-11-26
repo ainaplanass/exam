@@ -70,30 +70,24 @@ public class EmailSender
 }
 
 // ❌ Usuario debe conocer TODOS los pasos internos
-class Program
+Console.WriteLine("=== Violación de Abstracción ===");
+
+var emailSender = new EmailSender();
+
+// ❌ Muchos pasos manuales y conocimiento de detalles internos
+emailSender.Authenticate("usuario@gmail.com", "password123");
+emailSender.ConnectToServer();
+
+string message = emailSender.BuildMessage(
+    "destinatario@gmail.com",
+    "Hola",
+    "Este es el cuerpo del mensaje");
+
+emailSender.SendRawMessage(message);
+emailSender.DisconnectFromServer();
+
+// ❌ Si algo falla, el usuario debe verificar propiedades internas
+if (!string.IsNullOrEmpty(emailSender.LastError))
 {
-  static void Main()
-  {
-    Console.WriteLine("=== Violación de Abstracción ===");
-
-    var emailSender = new EmailSender();
-
-    // ❌ Muchos pasos manuales y conocimiento de detalles internos
-    emailSender.Authenticate("usuario@gmail.com", "password123");
-    emailSender.ConnectToServer();
-
-    string message = emailSender.BuildMessage(
-        "destinatario@gmail.com",
-        "Hola",
-        "Este es el cuerpo del mensaje");
-
-    emailSender.SendRawMessage(message);
-    emailSender.DisconnectFromServer();
-
-    // ❌ Si algo falla, el usuario debe verificar propiedades internas
-    if (!string.IsNullOrEmpty(emailSender.LastError))
-    {
-      Console.WriteLine($"Error: {emailSender.LastError}");
-    }
-  }
+  Console.WriteLine($"Error: {emailSender.LastError}");
 }

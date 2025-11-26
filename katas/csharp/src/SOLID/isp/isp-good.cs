@@ -49,27 +49,21 @@ public class AdvancedPrinter : IPrintable, IScannable
 }
 
 // Uso - ¡sin más implementaciones forzadas!
-class Program
-{
-  static void Main()
-  {
-    var simplePrinter = new SimplePrinter();
-    var simpleScanner = new SimpleScanner();
-    var advancedPrinter = new AdvancedPrinter();
+var simplePrinter = new SimplePrinter();
+var simpleScanner = new SimpleScanner();
+var advancedPrinter = new AdvancedPrinter();
 
-    Console.WriteLine(simplePrinter.Print("documento.pdf")); // ✅ Funciona
-                                                             // simplePrinter.Scan() - El método no existe (¡seguro en tiempo de compilación!)
+Console.WriteLine(simplePrinter.Print("documento.pdf")); // ✅ Funciona
+                                                         // simplePrinter.Scan() - El método no existe (¡seguro en tiempo de compilación!)
 
-    Console.WriteLine(simpleScanner.Scan()); // ✅ Funciona
-                                             // simpleScanner.Print() - El método no existe (¡seguro en tiempo de compilación!)
+Console.WriteLine(simpleScanner.Scan()); // ✅ Funciona
+                                         // simpleScanner.Print() - El método no existe (¡seguro en tiempo de compilación!)
 
-    Console.WriteLine(advancedPrinter.Print("documento.pdf")); // ✅ Funciona
-    Console.WriteLine(advancedPrinter.Scan()); // ✅ Funciona
+Console.WriteLine(advancedPrinter.Print("documento.pdf")); // ✅ Funciona
+Console.WriteLine(advancedPrinter.Scan()); // ✅ Funciona
 
-    // ✅ Beneficios:
-    // 1. Interfaces pequeñas y enfocadas
-    // 2. Clases solo implementan lo que necesitan
-    // 3. Sin métodos que lancen errores
-    // 4. Cumple ISP: interfaces segregadas
-  }
-}
+// ✅ Beneficios:
+// 1. Interfaces pequeñas y enfocadas
+// 2. Clases solo implementan lo que necesitan
+// 3. Sin métodos que lancen errores
+// 4. Cumple ISP: interfaces segregadas

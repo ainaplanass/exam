@@ -132,11 +132,11 @@ Abre el archivo `*-good.cs` y:
 ### Ejecutar los Ejemplos
 
 ```bash
-# Compilar y ejecutar un ejemplo específico
-csc Patterns\factory\factory-good.cs && factory-good.exe
-csc Patterns\builder\builder-good.cs && builder-good.exe
-csc Patterns\adapter\adapter-good.cs && adapter-good.exe
-csc Patterns\strategy\strategy-good.cs && strategy-good.exe
+# Ejecutar un ejemplo específico
+dotnet script Patterns\factory\factory-good.cs
+dotnet script Patterns\builder\builder-good.cs
+dotnet script Patterns\adapter\adapter-good.cs
+dotnet script Patterns\strategy\strategy-good.cs
 ```
 
 ---

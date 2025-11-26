@@ -3,17 +3,11 @@ using System;
 // Violación del SRP: La clase User tiene demasiadas responsabilidades
 // Problema: Esta clase maneja datos de usuario Y envío de emails Y operaciones de archivos
 
-class Program
-{
-  static void Main()
-  {
-    var user = new User("Juan Pérez", "juan@ejemplo.com");
+var user = new User("Juan Pérez", "juan@ejemplo.com");
 
-    Console.WriteLine(user.GetName());
-    Console.WriteLine(user.SendWelcomeEmail());
-    Console.WriteLine(user.SaveToFile());
-  }
-}
+Console.WriteLine(user.GetName());
+Console.WriteLine(user.SendWelcomeEmail());
+Console.WriteLine(user.SaveToFile());
 
 class User
 {

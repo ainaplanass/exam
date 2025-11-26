@@ -65,8 +65,8 @@ Pregúntate:
 ## 🚀 Cómo ejecutar
 
 ```bash
-# Compilar y ejecutar
-csc inheritance-bad.cs && inheritance-bad.exe
-csc inheritance-good.cs && inheritance-good.exe
+# Ejecutar ejemplos
+dotnet script inheritance-bad.cs
+dotnet script inheritance-good.cs
 ```
 ````

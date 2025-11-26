@@ -3,19 +3,13 @@ using System;
 // Cumplimiento del SRP: Cada clase tiene una única responsabilidad
 // Solución: Clases separadas para diferentes responsabilidades
 
-class Program
-{
-  static void Main()
-  {
-    var user = new User("Juan Pérez", "juan@ejemplo.com");
-    var emailService = new EmailService();
-    var fileManager = new UserFileManager();
+var user = new User("Juan Pérez", "juan@ejemplo.com");
+var emailService = new EmailService();
+var fileManager = new UserFileManager();
 
-    // Cada servicio maneja su propia responsabilidad
-    Console.WriteLine(emailService.SendWelcomeEmail(user));
-    Console.WriteLine(fileManager.SaveToFile(user));
-  }
-}
+// Cada servicio maneja su propia responsabilidad
+Console.WriteLine(emailService.SendWelcomeEmail(user));
+Console.WriteLine(fileManager.SaveToFile(user));
 
 class User
 {

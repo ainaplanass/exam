@@ -54,23 +54,17 @@ public class OrderService
 }
 
 // ✅ Beneficios: Fácil de intercambiar bases de datos, probar y extender
-class Program
-{
-  static void Main()
-  {
-    Console.WriteLine("=== Uso Cumpliendo el DIP ===");
+Console.WriteLine("=== Uso Cumpliendo el DIP ===");
 
-    var mysqlDb = new MySQLDatabase();
-    var postgresDb = new PostgreSQLDatabase();
-    var mongoDb = new MongoDatabase();
+var mysqlDb = new MySQLDatabase();
+var postgresDb = new PostgreSQLDatabase();
+var mongoDb = new MongoDatabase();
 
-    // ¡El mismo OrderService funciona con diferentes bases de datos! ✅
-    var orderService1 = new OrderService(mysqlDb);
-    var orderService2 = new OrderService(postgresDb);
-    var orderService3 = new OrderService(mongoDb);
+// ¡El mismo OrderService funciona con diferentes bases de datos! ✅
+var orderService1 = new OrderService(mysqlDb);
+var orderService2 = new OrderService(postgresDb);
+var orderService3 = new OrderService(mongoDb);
 
-    orderService1.ProcessOrder("001");
-    orderService2.ProcessOrder("002");
-    orderService3.ProcessOrder("003");
-  }
-}
+orderService1.ProcessOrder("001");
+orderService2.ProcessOrder("002");
+orderService3.ProcessOrder("003");

@@ -70,31 +70,25 @@ public class ShoppingCart
 // 2. Fácil agregar nuevas estrategias sin modificar ShoppingCart
 // 3. Estrategias se pueden probar por separado
 
-class Program
-{
-  static void Main()
-  {
-    Console.WriteLine("=== Solución con Patrón Strategy ===");
+Console.WriteLine("=== Solución con Patrón Strategy ===");
 
-    // ✅ Cada cliente usa su estrategia de descuento
-    var regularCart = new ShoppingCart(new RegularCustomerDiscount());
-    Console.WriteLine($"Regular: ${regularCart.CalculateTotal(100)}");
+// ✅ Cada cliente usa su estrategia de descuento
+var regularCart = new ShoppingCart(new RegularCustomerDiscount());
+Console.WriteLine($"Regular: ${regularCart.CalculateTotal(100)}");
 
-    var premiumCart = new ShoppingCart(new PremiumCustomerDiscount());
-    Console.WriteLine($"Premium: ${premiumCart.CalculateTotal(100)}");
+var premiumCart = new ShoppingCart(new PremiumCustomerDiscount());
+Console.WriteLine($"Premium: ${premiumCart.CalculateTotal(100)}");
 
-    var vipCart = new ShoppingCart(new VIPCustomerDiscount());
-    Console.WriteLine($"VIP: ${vipCart.CalculateTotal(100)}");
+var vipCart = new ShoppingCart(new VIPCustomerDiscount());
+Console.WriteLine($"VIP: ${vipCart.CalculateTotal(100)}");
 
-    var employeeCart = new ShoppingCart(new EmployeeDiscount());
-    Console.WriteLine($"Employee: ${employeeCart.CalculateTotal(100)}");
+var employeeCart = new ShoppingCart(new EmployeeDiscount());
+Console.WriteLine($"Employee: ${employeeCart.CalculateTotal(100)}");
 
-    // ✅ Se puede cambiar la estrategia dinámicamente
-    Console.WriteLine("\n=== Cambiando estrategia ===");
-    regularCart.SetDiscountStrategy(new VIPCustomerDiscount());
-    Console.WriteLine($"Regular -> VIP: ${regularCart.CalculateTotal(100)}");
-  }
-}
+// ✅ Se puede cambiar la estrategia dinámicamente
+Console.WriteLine("\n=== Cambiando estrategia ===");
+regularCart.SetDiscountStrategy(new VIPCustomerDiscount());
+Console.WriteLine($"Regular -> VIP: ${regularCart.CalculateTotal(100)}");
 
 // ✅ Agregar una nueva estrategia (ejemplo)
 public class SeasonalDiscount : IDiscountStrategy

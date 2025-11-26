@@ -65,22 +65,16 @@ public class MediaApp
 // 2. Fácil agregar nuevos reproductores (solo crear un adapter)
 // 3. Los reproductores originales no necesitan modificarse
 
-class Program
-{
-  static void Main()
-  {
-    Console.WriteLine("=== Solución con Patrón Adapter ===");
-    var app = new MediaApp();
+Console.WriteLine("=== Solución con Patrón Adapter ===");
+var app = new MediaApp();
 
-    // ✅ Todos los reproductores usan la misma interfaz
-    app.Play(new MP3PlayerAdapter(), "cancion.mp3");
-    app.Play(new WAVPlayerAdapter(), "cancion.wav");
+// ✅ Todos los reproductores usan la misma interfaz
+app.Play(new MP3PlayerAdapter(), "cancion.mp3");
+app.Play(new WAVPlayerAdapter(), "cancion.wav");
 
-    // ¡Agregar un nuevo formato es fácil!
-    Console.WriteLine("\n=== Nuevo formato agregado ===");
-    app.Play(new FLACPlayerAdapter(), "cancion.flac");
-  }
-}
+// ¡Agregar un nuevo formato es fácil!
+Console.WriteLine("\n=== Nuevo formato agregado ===");
+app.Play(new FLACPlayerAdapter(), "cancion.flac");
 
 // ✅ Agregar un nuevo formato (ejemplo)
 public class FLACPlayer

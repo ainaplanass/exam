@@ -108,15 +108,11 @@ Abre el archivo `*-good.cs` y:
 ### Ejecutar los Ejemplos
 
 ```bash
-# Compilar y ejecutar un ejemplo específico
-csc OOP\abstraction\abstraction-good.cs && abstraction-good.exe
-csc OOP\encapsulation\encapsulation-good.cs && encapsulation-good.exe
-csc OOP\inheritance\inheritance-good.cs && inheritance-good.exe
-csc OOP\polymorphism\polymorphism-good.cs && polymorphism-good.exe
-
-# O usando dotnet script (si está instalado)
+# Ejecutar un ejemplo específico
 dotnet script OOP\abstraction\abstraction-good.cs
 dotnet script OOP\encapsulation\encapsulation-good.cs
+dotnet script OOP\inheritance\inheritance-good.cs
+dotnet script OOP\polymorphism\polymorphism-good.cs
 ```
 
 ---

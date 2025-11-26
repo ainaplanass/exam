@@ -79,25 +79,19 @@ public class EmailSender
 }
 
 // ✅ Usuario solo necesita saber la interfaz pública simple
-class Program
-{
-  static void Main()
-  {
-    Console.WriteLine("=== Cumplimiento de Abstracción ===");
+Console.WriteLine("=== Cumplimiento de Abstracción ===");
 
-    var emailSender = new EmailSender("usuario@gmail.com", "password123");
+var emailSender = new EmailSender("usuario@gmail.com", "password123");
 
-    // ✅ Un solo método simple - toda la complejidad está oculta
-    emailSender.SendEmail(
-        "destinatario@gmail.com",
-        "Hola",
-        "Este es el cuerpo del mensaje");
+// ✅ Un solo método simple - toda la complejidad está oculta
+emailSender.SendEmail(
+    "destinatario@gmail.com",
+    "Hola",
+    "Este es el cuerpo del mensaje");
 
-    // ✅ Usuario no necesita conocer detalles internos como:
-    // - Conexión al servidor
-    // - Autenticación
-    // - Construcción del mensaje
-    // - Desconexión
-    // Todo está abstraído en un método simple
-  }
-}
+// ✅ Usuario no necesita conocer detalles internos como:
+// - Conexión al servidor
+// - Autenticación
+// - Construcción del mensaje
+// - Desconexión
+// Todo está abstraído en un método simple

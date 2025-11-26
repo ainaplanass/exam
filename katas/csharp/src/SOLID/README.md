@@ -124,12 +124,12 @@ Abre el archivo `*-good.cs` y:
 ### Ejecutar los Ejemplos
 
 ```bash
-# Compilar y ejecutar un ejemplo específico
-csc SOLID\srp\srp-good.cs && srp-good.exe
-csc SOLID\ocp\ocp-good.cs && ocp-good.exe
-csc SOLID\lsp\lsp-good.cs && lsp-good.exe
-csc SOLID\isp\isp-good.cs && isp-good.exe
-csc SOLID\dip\dip-good.cs && dip-good.exe
+# Ejecutar un ejemplo específico
+dotnet script SOLID\srp\srp-good.cs
+dotnet script SOLID\ocp\ocp-good.cs
+dotnet script SOLID\lsp\lsp-good.cs
+dotnet script SOLID\isp\isp-good.cs
+dotnet script SOLID\dip\dip-good.cs
 ```
 
 ---
