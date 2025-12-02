@@ -1,122 +1,112 @@
 // @ts-nocheck
-class Order {
-  constructor(id, type, quantity, unitPrice, taxType, customerType, orderCount) {
-    this.id = id;
-    this.type = type;
-    this.quantity = quantity;
-    this.unitPrice = unitPrice;
-    this.taxType = taxType;
-    this.customerType = customerType;
-    this.orderCount = orderCount;
-  }
+function calculateTax(subtotal, taxType) {
+  return taxType === 'gen' ? subtotal * 0.1 : subtotal * 0.04;
 }
-class TaxCalculator {
-  calculate(sub, t) {
-    return t === 'gen' ? sub * 0.1 : sub * 0.04;
+
+function calculateDiscount(subtotal, customerType, orderCount) {
+  if (customerType === 'premium') {
+    if (orderCount >= 10) return subtotal * 0.15;
+    if (orderCount >= 5) return subtotal * 0.1;
+    return subtotal * 0.05;
   }
-}
-class DiscountCalculator {
-  calculate(sub, c, o) {
-    if (c === 'premium') {
-      if (o >= 10) return sub * 0.15;
-      if (o >= 5) return sub * 0.1;
-      return sub * 0.05;
-    }
-    if (c === 'regular') {
-      if (o >= 10) return sub * 0.05;
-      if (o >= 5) return sub * 0.02;
-      return 0;
-    }
+  if (customerType === 'regular') {
+    if (orderCount >= 10) return subtotal * 0.05;
+    if (orderCount >= 5) return subtotal * 0.02;
     return 0;
   }
+  return 0;
 }
-class ShippingCalculator {
-  calculate(q) {
-    return 0;
+
+function calculateShippingCost(type, quantity) {
+  if (type === 'std') return 5 + quantity * 0.5;
+  if (type === 'exp') {
+    let amount = 12 + quantity * 1.0;
+    if (quantity >= 4) amount += 6;
+    return amount;
   }
-}
-class StandardShipping extends ShippingCalculator {
-  calculate(q) {
-    return 5 + q * 0.5;
-  }
-}
-class ExpressShipping extends ShippingCalculator {
-  calculate(q) {
-    let a = 12 + q * 1.0;
-    if (q >= 4) a += 6;
-    return a;
-  }
-}
-class EconomyShipping extends ShippingCalculator {
-  calculate(q) {
-    return 3 + q * 0.25;
-  }
-}
-function createShipping(type) {
-  if (type === 'std') return new StandardShipping();
-  if (type === 'exp') return new ExpressShipping();
-  return new EconomyShipping();
+  return 3 + quantity * 0.25;
 }
 function processOrders() {
   const orders = [
-    new Order(1, 'std', 2, 15.0, 'gen', 'premium', 6),
-    new Order(2, 'exp', 1, 25.0, 'gen', 'regular', 2),
-    new Order(3, 'eco', 5, 9.5, 'red', 'premium', 12),
-    new Order(4, 'std', 3, 12.0, 'gen', 'regular', 1),
-    new Order(5, 'exp', 4, 18.0, 'gen', 'premium', 8)
+    {
+      id: 1,
+      type: 'std',
+      quantity: 2,
+      unitPrice: 15.0,
+      taxType: 'gen',
+      customerType: 'premium',
+      orderCount: 6
+    },
+    {
+      id: 2,
+      type: 'exp',
+      quantity: 1,
+      unitPrice: 25.0,
+      taxType: 'gen',
+      customerType: 'regular',
+      orderCount: 2
+    },
+    {
+      id: 3,
+      type: 'eco',
+      quantity: 5,
+      unitPrice: 9.5,
+      taxType: 'red',
+      customerType: 'premium',
+      orderCount: 12
+    },
+    {
+      id: 4,
+      type: 'std',
+      quantity: 3,
+      unitPrice: 12.0,
+      taxType: 'gen',
+      customerType: 'regular',
+      orderCount: 1
+    },
+    {
+      id: 5,
+      type: 'exp',
+      quantity: 4,
+      unitPrice: 18.0,
+      taxType: 'gen',
+      customerType: 'premium',
+      orderCount: 8
+    }
   ];
-  const taxCalc = new TaxCalculator();
-  const discCalc = new DiscountCalculator();
   let totalRevenue = 0,
     totalDiscounts = 0,
     totalTaxes = 0;
   const results = [];
   for (let i = 0; i < orders.length; i++) {
-    const o = orders[i];
-    const sub = o.quantity * o.unitPrice;
-    const tax = taxCalc.calculate(sub, o.taxType);
-    const ship = createShipping(o.type).calculate(o.quantity);
-    const disc = discCalc.calculate(sub, o.customerType, o.orderCount);
-    const total = sub + tax + ship - disc;
-    totalRevenue += total;
-    totalDiscounts += disc;
+    const order = orders[i];
+    const subtotal = order.quantity * order.unitPrice;
+    const tax = calculateTax(subtotal, order.taxType);
+    const shippingCost = calculateShippingCost(order.type, order.quantity);
+    const discount = calculateDiscount(subtotal, order.customerType, order.orderCount);
+    const total = subtotal + tax + shippingCost - discount;
+    totalDiscounts += discount;
     totalTaxes += tax;
     results.push({
-      id: o.id,
-      subtotal: sub,
+      id: order.id,
+      subtotal: subtotal,
       tax,
-      shipping: ship,
-      discount: disc,
+      shipping: shippingCost,
+      discount: discount,
       total,
-      type: o.type
+      type: order.type
     });
   }
-  console.log('=== BOOKLY REPORT ===');
-  console.log('Total pedidos: ' + orders.length);
-  console.log('---');
+  console.log(`=== BOOKLY REPORT === | Total pedidos: ${orders.length}`);
   for (let j = 0; j < results.length; j++) {
-    const r = results[j];
+    const result = results[j];
     console.log(
-      'Pedido #' +
-        r.id +
-        ' | Tipo: ' +
-        r.type +
-        ' | Subtotal: €' +
-        r.subtotal.toFixed(2) +
-        ' | IVA: €' +
-        r.tax.toFixed(2) +
-        ' | Envío: €' +
-        r.shipping.toFixed(2) +
-        ' | Descuento: €' +
-        r.discount.toFixed(2) +
-        ' | Total: €' +
-        r.total.toFixed(2)
+      `Pedido #${result.id} | Tipo: ${result.type} | Subtotal: €${result.subtotal.toFixed(2)} | IVA: €${result.tax.toFixed(2)} | Envío: €${result.shipping.toFixed(2)} | Descuento: €${result.discount.toFixed(2)} | Total: €${result.total.toFixed(2)}`
     );
   }
-  console.log('---');
-  console.log('Ingresos totales: €' + totalRevenue.toFixed(2));
-  console.log('Descuentos totales: €' + totalDiscounts.toFixed(2));
-  console.log('Impuestos totales: €' + totalTaxes.toFixed(2));
+  console.log(
+    `Ingresos totales: €${totalRevenue.toFixed(2)} | Descuentos totales: €${totalDiscounts.toFixed(2)} | Impuestos totales: €${totalTaxes.toFixed(2)}`
+  );
   console.log('=====================');
   return results;
 }

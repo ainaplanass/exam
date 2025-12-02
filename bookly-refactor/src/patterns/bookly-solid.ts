@@ -1,20 +1,20 @@
 // @ts-nocheck
 class TaxStrategy {
-  calc(sub: number, t: string) {
-    return t === 'gen' ? sub * 0.1 : sub * 0.04;
+  calculate(subtotal: number, taxType: string) {
+    return taxType === 'gen' ? subtotal * 0.1 : subtotal * 0.04;
   }
 }
 class PremiumDiscountStrategy {
-  calc(sub: number, orders: number) {
-    if (orders >= 10) return sub * 0.15;
-    if (orders >= 5) return sub * 0.1;
-    return sub * 0.05;
+  calculate(subtotal: number, orderCount: number) {
+    if (orderCount >= 10) return subtotal * 0.15;
+    if (orderCount >= 5) return subtotal * 0.1;
+    return subtotal * 0.05;
   }
 }
 class RegularDiscountStrategy {
-  calc(sub: number, orders: number) {
-    if (orders >= 10) return sub * 0.05;
-    if (orders >= 5) return sub * 0.02;
+  calculate(subtotal: number, orderCount: number) {
+    if (orderCount >= 10) return subtotal * 0.05;
+    if (orderCount >= 5) return subtotal * 0.02;
     return 0;
   }
 }
@@ -25,29 +25,40 @@ class DiscountFactory {
 }
 class ShippingBuilder {
   static build(type: string) {
-    if (type === 'std') return { calculate: (q: number) => 5 + q * 0.5 };
+    if (type === 'std') return { calculate: (quantity: number) => 5 + quantity * 0.5 };
     if (type === 'exp')
       return {
-        calculate: (q: number) => {
-          let a = 12 + q * 1.0;
-          if (q >= 4) a += 6;
-          return a;
+        calculate: (quantity: number) => {
+          let amount = 12 + quantity * 1.0;
+          if (quantity >= 4) amount += 6;
+          return amount;
         }
       };
-    return { calculate: (q: number) => 3 + q * 0.25 };
+    return { calculate: (quantity: number) => 3 + quantity * 0.25 };
   }
 }
 class OrderFacade {
   constructor() {
     this.tax = new TaxStrategy();
   }
-  process(o) {
-    const sub = o.quantity * o.unitPrice;
-    const tax = this.tax.calc(sub, o.taxType);
-    const ship = ShippingBuilder.build(o.type).calculate(o.quantity);
-    const disc = DiscountFactory.create(o.customerType).calc(sub, o.orderCount);
-    const total = sub + tax + ship - disc;
-    return { id: o.id, subtotal: sub, tax, shipping: ship, discount: disc, total, type: o.type };
+  process(order) {
+    const subtotal = order.quantity * order.unitPrice;
+    const tax = this.tax.calculate(subtotal, order.taxType);
+    const shippingCost = ShippingBuilder.build(order.type).calculate(order.quantity);
+    const discount = DiscountFactory.create(order.customerType).calculate(
+      subtotal,
+      order.orderCount
+    );
+    const total = subtotal + tax + shippingCost - discount;
+    return {
+      id: order.id,
+      subtotal: subtotal,
+      tax,
+      shipping: shippingCost,
+      discount: discount,
+      total,
+      type: order.type
+    };
   }
 }
 function processOrders() {
@@ -103,38 +114,22 @@ function processOrders() {
     totalDiscounts = 0,
     totalTaxes = 0;
   const results = [];
-  for (const o of orders) {
-    const r = facade.process(o);
-    totalRevenue += r.total;
-    totalDiscounts += r.discount;
-    totalTaxes += r.tax;
-    results.push(r);
+  for (const order of orders) {
+    const result = facade.process(order);
+    totalRevenue += result.total;
+    totalDiscounts += result.discount;
+    totalTaxes += result.tax;
+    results.push(result);
   }
-  console.log('=== BOOKLY REPORT ===');
-  console.log('Total pedidos: ' + orders.length);
-  console.log('---');
-  for (const r of results) {
+  console.log(`=== BOOKLY REPORT === | Total pedidos: ${orders.length}`);
+  for (const result of results) {
     console.log(
-      'Pedido #' +
-        r.id +
-        ' | Tipo: ' +
-        r.type +
-        ' | Subtotal: €' +
-        r.subtotal.toFixed(2) +
-        ' | IVA: €' +
-        r.tax.toFixed(2) +
-        ' | Envío: €' +
-        r.shipping.toFixed(2) +
-        ' | Descuento: €' +
-        r.discount.toFixed(2) +
-        ' | Total: €' +
-        r.total.toFixed(2)
+      `Pedido #${result.id} | Tipo: ${result.type} | Subtotal: €${result.subtotal.toFixed(2)} | IVA: €${result.tax.toFixed(2)} | Envío: €${result.shipping.toFixed(2)} | Descuento: €${result.discount.toFixed(2)} | Total: €${result.total.toFixed(2)}`
     );
   }
-  console.log('---');
-  console.log('Ingresos totales: €' + totalRevenue.toFixed(2));
-  console.log('Descuentos totales: €' + totalDiscounts.toFixed(2));
-  console.log('Impuestos totales: €' + totalTaxes.toFixed(2));
+  console.log(
+    `Ingresos totales: €${totalRevenue.toFixed(2)} | Descuentos totales: €${totalDiscounts.toFixed(2)} | Impuestos totales: €${totalTaxes.toFixed(2)}`
+  );
   console.log('=====================');
   return results;
 }
