@@ -61,3 +61,5 @@ export function runApplication() {
   const result2 = controller.handleGetUser(999);
   console.log("Resultado:", result2);
 }
+
+runApplication();

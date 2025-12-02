@@ -56,6 +56,11 @@ En la carpeta `errors/`:
 - [ ] Códigos HTTP apropiados según el tipo de error
 - [ ] Logging de errores implementado
 
+## Ejecutar código
+
+- cd .\katas\typescript\src\ErrorHandling\no-managed-exceptions
+- npx ts-node .\PresentationLayer.ts
+
 ---
 
 **Tip:** Analiza cada método y determina qué errores puede lanzar. Gestiónalos de manera apropiada según el nivel de abstracción.
