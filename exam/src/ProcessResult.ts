@@ -12,14 +12,12 @@ export class ProcessResult
         return this.success;
     }
 
-    private getExtractedDataReport(): string
+    private getSuccessReportData(): string
     {
-        let dataReport = `\nreport:\n`;
+        let dataReport = `Information about the success report:`;
         
         for ( const key in this.extractedData ) {
-            if (key !== "documentType" && this.extractedData[ key ]) {
-                dataReport += `${key}: ${ this.extractedData[ key ] }\n`;
-            }
+            dataReport += `${ key }: ${ this.extractedData[ key ] }\n`;
         }
         return dataReport;
     }
@@ -27,16 +25,16 @@ export class ProcessResult
     public getReport(): string
     {
         const status = this.success ? "Success" : "Failure";
-        const docType = this.extractedData["documentType"] || "Unknown";
+        const docType = this.extractedData[ "documentType" ] || "Unknown";
 
         let report = `\nreport\n`;
-        report += `document: ${docType}\n`;
-        report += `status:${status}\n`;
-        report += `${this.messages.join("\n  - ")}\n`;
+        report += `document: ${ docType }\n`;
+        report += `status:${ status }\n`;
+        report += `${ this.messages.join( "\n  - " ) }\n`;
 
-        if (this.success) 
+        if ( this.success ) 
         {
-            report += this.getExtractedDataReport();
+            report += this.getSuccessReportData();
         }
         return report;
     }
